@@ -1,0 +1,112 @@
+/*.bx-wrapper .bx-viewport ul#slider1 li{
+    height: 180px;
+    width : 150px;
+    background: white;
+    margin: 20px auto;
+}*/
+
+ul#slider1{
+    margin: 0px auto;
+}
+
+/*ul.horizontal li{
+    height: 100px;
+    width : 70px;
+    /*background: white;
+}*/
+ul.horizontal li{
+    height: 236px !important;
+    /*width : 200px !important; */
+    margin: 0 auto;
+    line-height: none;
+}
+ul.horizontal li a{
+	text-decoration: none;
+	color: black;
+	font-size: 1.5em;
+	line-height: 20px;
+}
+/*ul.horizontal{
+    margin: 10px auto;
+}*/
+
+ul.horizontal .img-item{
+    height: 139px;
+    margin: 8px auto auto 10px;
+    max-width: inherit;
+    vertical-align: bottom;
+    width: 139px;
+}
+
+/*div#sl_wrap2 div{
+    background: #333333;
+    border: none;
+    box-shadow: none;
+}
+
+div#center_main div#sl_wrap{
+    margin: 20px auto auto 25px;
+    width: 575px;
+    height: 250px;
+}
+
+div#center_main div#sl_wrap2{
+    margin: 20px auto auto 20px;
+    width: 575px;
+    height: 153px;
+    color: black;
+    /*background-color: green;
+    font: normal 12px/14px Areal sans-serif;
+}*/
+
+
+div#sl_wrap .bx-has-pager{display: none;}
+div.horizontal-root .bx-pager{display: none;}
+div#slider_w1 {width: 80%;max-width: 900px;margin:0 auto}
+div#slider_w2 {
+	margin-top:60px;
+}
+
+/*div.horizontal-root {width:expression(document.documentElement.clientWidth||document.body.clientWidth)<960?'960px':"45px"}*/
+
+.bx-wrapper .bx-viewport{
+    background: none;
+    border: none;
+    box-shadow: none;
+	/*height: inherit !important;*/	
+}
+
+div#sl_wrap2 .bx-viewport{
+    width:87% !important;  
+    margin: 0 auto auto 46px;
+}
+
+/*.horizontal a p{
+    color: white;
+    font-size: 19px;
+    margin-top: 14px;
+    width: 88px;
+}*/
+
+/*#sl_wrap div .bx-viewport{
+    height:200px !important;
+}*/
+div.horizontal-root .bx-viewport, div.horizontal-root  .bx-wrapper {
+	height: 236px !important;
+}
+
+div.horizontal-root .bx-viewport{
+    width:80% !important;
+	position: none !important;
+	margin: 0 auto !important;
+	max-width: 900px; /*вынести для IE*/
+}
+.horizontal-root{
+	height: 236px;
+}
+
+#slider_vertical li {
+	width: 150px !important;
+	margin-left: 10px;
+	padding: 5px;
+}

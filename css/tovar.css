@@ -1,0 +1,47 @@
+.mypreview{
+	width:395px;
+	min-height:500px;
+	background:white;
+	border:1px solid black;
+	padding:10px;
+	float:left;
+}
+
+.tovar-wrap{
+    margin: 0 auto;
+    max-width: 900px;
+    width: 80%;
+}
+.description{
+	margin-left:420px;
+	padding:10px;
+	width:45%;
+  display: block;
+}
+.desc{
+	color:#666666;
+	font-size:19px;
+}
+.fontsize26{
+	font-size:26px;
+}
+.fontsize39{
+	font-size:39px;
+}
+
+[class*="fontsize"] {
+	margin: 76px auto 20px 20px;
+}
+
+.tovar-price{
+	height: 120px;
+}
+.prices{font-size:40px;width:190px}
+.prices .oldprice{color:gray;text-decoration:line-through}
+.prices .newprice{color:red;margin-top:17px}
+.prices-top{margin-top:17px}
+.availability{width:422px;height:60px;margin: 10px auto}
+.availability div{height:100%;font-size:43px;color:white; font-style:normal; background:#FF6666;border:1px solid #990000;text-align:center}
+.buy-large{margin:25px auto auto 75px}
+select {font:inherit;color:black;font-size:20px;height:36px}
+.mypreview .bx-prev,.mypreview .bx-next{display:none !important}

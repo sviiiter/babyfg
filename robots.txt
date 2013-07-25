@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /store/saveorder
+Disallow: /feedback
+Disallow: /store/cart
+Disallow: /news
+Disallow: /registration
+Disallow: /recovery
+Disallow: /login
+Disallow: /store/cart
+Host: www.gorillamen.ru

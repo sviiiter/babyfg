@@ -1,0 +1,14 @@
+#content .center {
+    margin-top: 304px  !important;
+}   
+
+#content .center .in {
+    background: none repeat scroll 0 0 white !important;
+    margin: 0 20% !important;
+    min-height: 1791px !important;
+}
+.modal {
+  left:-153px !important;
+  position:absolute !important;
+  top:52px !important;
+}
