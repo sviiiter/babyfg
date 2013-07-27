@@ -1,10 +1,10 @@
 <h1>Левое меню</h1>
-<?= ($model->errors) 
+<?= (isset($model->errors) && $model->errors) 
   ? '<div class="alert alert-error">' . CHtml::errorSummary($model) . "</div>" 
   : ((Yii::app()->user->hasFlash('Success')) ? '<div class="alert alert-success">' . Yii::app()->user->getFlash('Success') . "</div>" : ''); ?>
 <h2>Создать</h2>
 <p>
-<?= CHtml::beginForm(); ?>
+<?= CHtml::beginForm($this->createUrl('CreateMenuItem')); ?>
 <p><?=  CHtml::dropDownList('NavItems_create[parent_id]', null, $root, array('empty' => 'Выберите корневой разел')); ?></p>
 <p><?=  CHtml::textField('NavItems_create[name]', '',array('class' => 'input-xxlarge', 'placeholder' => 'Введите название категории')); ?></p>
 <p><?=  CHtml::button('Сохранить', array('type' => 'submit'))?></p>
@@ -13,20 +13,27 @@
 
 <h2>Редактировать</h2>
 <p>
-<?= CHtml::beginForm(); ?>
-<?= ($model->errors) 
-  ? '<div class="alert alert-error">' . CHtml::errorSummary($model) . "</div>" 
+<?= CHtml::beginForm('', 'post',array('id' => 'edit','enctype'=>'multipart/form-data')); ?>
+<?= (isset($editmodel->errors) && $editmodel->errors)  
+  ? '<div class="alert alert-error">' . CHtml::errorSummary($editmodel) . "</div>" 
   : ((Yii::app()->user->hasFlash('Success')) ? '<div class="alert alert-success">' . Yii::app()->user->getFlash('Success') . "</div>" : ''); ?>
-<p><?=  CHtml::dropDownList('item', null, $items, array('id' => 'editselect','empty' => 'Выберите пункт меню для редактирования','options' => null)); ?></p>
-<p><?=  CHtml::textField('NavItems_edit[name]', '',array('class' => 'input-xxlarge', 'placeholder' => 'Введите название категории')); ?></p>
-<p><?=  CHtml::button('Сохранить', array('type' => 'submit'))?></p>
+  <p><?=  CHtml::activeDropDownList($editmodel, 'id', $items, array(
+    'id' => 'editselect',
+    'empty' => 'Выберите пункт меню для редактирования',
+    'options' => null,
+    'onchange'  => 'js: var val = $(this).val(); window.location.href = \'' . $this->createUrl('CreateMenuItem', array('edit' => 'true')) . '/id/\' +  val; '
+  )); ?></p>
+  <p><?=  CHtml::activeTextField($editmodel, 'name',array('class' => 'input-xxlarge', 'placeholder' => 'Введите название категории')); ?></p>
+  <p><?= CHtml::activeFileField($editmodel,'picture',array('size'=>60,'maxlength'=>128)); ?> </p>
+  <?php echo CHtml::image('/image/menu/' . $editmodel->picture); ?>
+  <p><?=  CHtml::button('Сохранить', array('type' => 'submit'))?></p>
 <?= CHtml::endForm(); ?>
 </p>
 
 <h2>Удалить</h2>
 <p>
-<?= CHtml::beginForm(); ?>
-<?= ($model->errors) 
+<?= CHtml::beginForm($this->createUrl('CreateMenuItem')); ?>
+<?= (isset($model->errors) && $model->errors)  
   ? '<div class="alert alert-error">' . CHtml::errorSummary($model) . "</div>" 
   : ((Yii::app()->user->hasFlash('Success')) ? '<div class="alert alert-success">' . Yii::app()->user->getFlash('Success') . "</div>" : ''); ?>
 <p><?=  CHtml::dropDownList('deleteitem', null, $items, array('id' => 'deleteselect','empty' => 'Выберите пункт меню для редактирования','options' => $disabled)); ?></p>
@@ -35,12 +42,17 @@
 </p>
 
 <?php
-  Yii::app()->clientscript->registerScript('createmenu', '
-      $("#editselect").change(function(){
+/*
+ *       $("#editselect").change(function(){
       var selected = $(this).find("option:selected").text();
       var toset = selected.replace("----","");
       $(this).parents("form").find("#NavItems_edit_name").val(toset);
     })
-  ');
+ */
+  /*Yii::app()->clientscript->registerScript('createmenu', '
+    $("#editselect").change(function(){
+      $(\'#edit\').submit();
+    });
+  ');*/
 ?>
 

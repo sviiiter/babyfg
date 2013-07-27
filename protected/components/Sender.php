@@ -6,36 +6,37 @@ class Sender
     {
         $i = 0;
         $sumprice = 0;
-        foreach ($items as $item) {
-            $model = Tovar::model()->findByPk($item['id']);
-            $model->custom ? $custom = $model->custom : $custom = 'Параметр';
-            $string[] = "Название : ".$model->name.",<br/>
-            Цена : ".$model->price." р <br/>
-            ".$custom." : ".$items[$i]['custom']."<br/>
-            Колличество: ".$items[$i]['quantity']."<br/>";       
-            $sumprice += $model->price * $items[$i]['quantity'];
+        $model = Tovar::model()->with('customfield1', 'customfield2')->findAllByPk(array_keys($items));
+        foreach ($model as $id => $item) {            
+            $string[] = "Название : " . $item->name . ",<br/> Цена : " . $item->price1 . " р <br/>";
+            foreach ($item as $properties) {
+              $string[$i] .= ( isset($properties['param1'])) ? $item->custom1 . " : " . $item->customfield1[ $properties['param1']]->name . "<br/>" : '';              
+              $string[$i] .= ( isset($properties['param2'])) ? $item->custom2 . " : " . $item->customfield2[ $properties['param2']]->name . "<br/>" : '';
+              $string[$i] .= ( isset($properties['quantity'])) ? 'Количество : ' . $properties['quantity'] . '<br/>' : '';
+            }    
+            //$sumprice += $model->price1 * $items[$i]['quantity'];
             $i++;
         }        
-        $message = "<b>Заказ</b> >><br/>".implode('<br/>-------------<br/>', $string).".</br><b>Общая стоимость: ".$sumprice." р</b>";
+        $message = "<b>Заказ</b> >><br/>".implode('<br/>-------------<br/>', $string).".</br><b>Общая стоимость: " . ContentModule::sumprice() . " р</b>";
         return $message;
     }        
     
-    public static function sendCartbyMailtoAdmin($items,$model)
+    public static function sendCartbyMailtoAdmin($items, $model)
     {
       $person = "Контактная информация:<br/>
-        Имя :".$model->person.",<br/>
-        Телефон :".$model->phone.",<br/>    
-        Эл.почта :".$model->email.",<br/>  
-        Адрес доставки :".$model->adress.",<br/>
-        Дополнительная информация :".$model->additionalinfo."
+        Имя :" . $model->person . ",<br/>
+        Телефон :" . $model->phone . ",<br/>    
+        Эл.почта :" . $model->email . ",<br/>  
+        Адрес доставки :" . $model->adress . ",<br/>
+        Дополнительная информация :" . $model->additionalinfo . "
         ";
       $orderbody = Sender::getMessage($items);
-      $message = $person."<br/><hr><br/>".$orderbody;
-      $subject = Yii::app()->name.': новый заказ';
+      $message = $person."<br/><hr><br/>" . $orderbody;
+      $subject = Yii::app()->name . ': новый заказ';
       Sender::sendMail(Yii::app()->params['adminEmail'], $subject, $message, Yii::app()->params['adminEmail']);
     }
     
-    public static function sendCartbyMailtoUser($recipientemail,$items)
+    public static function sendCartbyMailtoUser($recipientemail, $items)
     {
       $message = Sender::getMessage($items).'<br/> <b>Спасибо за Ваш заказ. Мы обязательно с Вами свяжемся в ближайшее время.</b>';
       $subject = 'Ваш заказ на сайте: '.Yii::app()->name;

@@ -297,34 +297,52 @@ class ManageController extends Controller
       NavigationItems::model()->deleteByPk((int) $_POST['deleteitem']);
       Yii::app()->user->setFlash('Success', 'Успешно');
     }     
+    $model = new NavigationItems;
     // Редактирование
-    if ( isset($_POST['NavItems_edit']) ) {   
-      $it_model = NavigationItems::model()->findByPk((int) Yii::app()->request->getParam('item'));
-      $it_model->attributes = $_POST['NavItems_edit'];
-        if ($it_model->validate()) {
-          $it_model->save();
-          Yii::app()->user->setFlash('Success', 'Успешно');
-        }      
-    }     
-    
-    $model = new NavigationItems;   
-      if ( isset($_POST['NavItems_create']) ) {   
-        $model->attributes = $_POST['NavItems_create'];
-          if ($model->validate()) {
-            $model->save();
-            Yii::app()->user->setFlash('Success', 'Успешно');
+    if ( isset($_GET['edit']) && isset($_GET['id'])) {
+      $editmodel = NavigationItems::model()->findByPk((int) Yii::app()->request->getParam('id'));   
+      $uploader = CUploadedFile::getInstance($model, 'picture');      
+      if ( (isset($_POST['NavigationItems']['name']) && strlen($_POST['NavigationItems']['name']) > 0) || ($uploader instanceof CUploadedFile)) {        
+        $editmodel->attributes = $_POST['NavigationItems'];
+        if ( $editmodel->validate()) {
+          if ($uploader instanceof CUploadedFile) {
+            $editmodel->picture = md5($uploader->name) . '.jpg';            
+            $uploader->saveAs($_SERVER['DOCUMENT_ROOT'] . '/image/menu/big/' . $editmodel->picture);
+            Yii::app()->ih
+              ->load($_SERVER['DOCUMENT_ROOT'] . '/image/menu/big/' . $editmodel->picture)
+              ->thumb(213, 213)                  
+              ->save($_SERVER['DOCUMENT_ROOT'] . '/image/menu/' . $editmodel->picture);             
           }
-      }      
-    $all = $model->findAll();
+          $editmodel->save();
+          Yii::app()->user->setFlash('Success', 'Успешно');
+        }
+        
+      }           
+    }     
+           
+    
+    if ( isset($_POST['NavItems_create']) ) {   
+      $model->attributes = $_POST['NavItems_create'];
+        if ($model->validate()) {
+          $model->save();
+          Yii::app()->user->setFlash('Success', 'Успешно');
+        }
+    }      
+    $all = NavigationItems::model()->findAll();
     $root = SomeIterations::selectRoot($all);
       foreach ($all as $a) {
         if ((int)$a->parent_id === 0) {
           $onlyRoots[$a->id] = $a->name;
         }
       }
-      
     // Меню
     $menu = SomeIterations::menuItems($root);
-    $this->render('createmenu', array('root' => $onlyRoots, 'model' => $model, 'items' => $menu['items'], 'disabled' => $menu['disabled']));
+    $this->render('createmenu', array(
+      'root' => $onlyRoots,
+      'model' => $model,
+      'items' => $menu['items'],
+      'disabled' => $menu['disabled'],
+      'editmodel' => (isset($editmodel)) ? $editmodel : $model
+    ));
   }
 }

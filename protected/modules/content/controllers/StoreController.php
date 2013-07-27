@@ -1,7 +1,7 @@
 <?php
 
 class StoreController extends Controller
-{    
+{       
     public function init() {
         parent::init();
     }
@@ -31,6 +31,7 @@ class StoreController extends Controller
           'pictures' => array('order' => 'is_cover DESC'),
           'customfields'
         ))->findByPk($id);
+        $this->category = $tovar->menu_id_item;
         $custom1 = array();
         $custom2 = array();
         foreach ($tovar->customfields as $cusfield) {
@@ -52,7 +53,7 @@ class StoreController extends Controller
                 $this->description = (isset($matches[0]) && strlen($matches[0]) < 145) 
                     ? str_replace(array('&nbsp;','&mdash;'), ' ', strip_tags($matches[0]))
                     : str_replace(array('&nbsp;','&mdash;'), ' ', strip_tags(substr($type->description, 0, strpos($type->description, '.'))));               
-                $this->description = $type->type . "." . $this->description . ". Магазин спортивного питания " . Yii::app()->name . ".";                    
+                $this->description = $type->type . "." . $this->description . ". Магазин детской одежды " . Yii::app()->name . ".";                    
                 $this->description = str_replace('  ', ' ', $this->description); 
                 $pagetitletext = $pagetitletext . $type->type;
                 if ($type->type == 'BCAA') 
@@ -97,6 +98,11 @@ class StoreController extends Controller
     public function actionListbymenu(){
         $pagetitletext = '';
         $menuItem = isset($_GET['menu'])  ?   $_GET['menu'] : false;
+        $menu = ($menuItem) ? NavigationItems::model()->findAll( new CDbCriteria(array(
+          'index' =>  'id',
+          'condition' =>  'parent_id = :parent_id',
+          'params'  =>  array(':parent_id' => $menuItem)
+        ))) : false;
         //Yii::app()->session['tovartype'] = $typeparam;
         //$this->pageTitle = $pagetitletext;
         if(!Yii::app()->user->isGuest)
@@ -105,8 +111,12 @@ class StoreController extends Controller
             $user = null;  
         $criteria=new CDbCriteria;
         if ($menuItem) {
-          $criteria->condition = 'menu_id_item = :menu_id_item';
-          $criteria->params = array(':menu_id_item' => $menuItem);
+          if ($menu) {
+            $criteria->addInCondition( 'menu_id_item', array_keys($menu));
+          } else {
+            $criteria->condition = 'menu_id_item = :menu_id_item';
+            $criteria->params = array(':menu_id_item' => $menuItem);
+          }
         }
         $pages=new CPagination(Tovar::model()->count($criteria));
         $pages->pageSize = 18;
@@ -170,66 +180,71 @@ class StoreController extends Controller
     
     public function actionAddtovartocart()
     {
-       if (Yii::app()->request->isAjaxRequest)
-            {
-                $cart = Yii::app()->session['id'];
-                $cart[$_GET['id']] = 1;
-                Yii::app()->session['id'] = $cart;                
-                echo '{ "session_count": ' . sizeof(Yii::app()->session['id']) . ', "myimg" : "<img src=\'/css/incart.png\' />" }';
-                //echo sizeof(Yii::app()->session['id']);                
-            }
+      if ( !isset($_GET['id']) || !Yii::app()->request->isAjaxRequest)
+        throw new CHttpException(403, 'Доступ запрещен');
+        $cart = Yii::app()->session['id'];
+        $arTemp = array(
+          'id' => $_GET['id'],
+          'param1'  =>  $_GET['first_param'],
+          'param2'  =>   $_GET['second_param'],
+          'quantity'  =>  $_GET['quantity'],          
+        );
+        $cart[ $_GET['id'] ][ $_GET['first_param'] . '_' . $_GET['second_param'] ] = $arTemp;
+        Yii::app()->session['id'] = $cart;    
+        echo '{ "session_count": ' . sizeof(Yii::app()->session['id']) . ', "myimg" : "<img src=\'/css/incart.png\' />" }';           
     }
     
     public function actionCart()  //Переделать на правильные условия!!!
     {
-        $this->pageTitle = '"'.Yii::app()->name.'" - Корзина';        
-        if(isset(Yii::app()->session['id']))
-        {
-            if(Yii::app()->session['id'])
-            {
-            $session = Yii::app()->session['id'];
-            ksort($session);
-            $criteria=new CDbCriteria;
-            $criteria->addInCondition('id',  array_keys($session)); 
-            $pages=new CPagination(Tovar::model()->count($criteria));
-            $pages->pageSize = 4;
-            $pages->applyLimit($criteria);        
-            $items = Tovar::model()->with('customfield')->findAll($criteria); 
-            $sumprice = ContentModule::sumprice();
-            }
-            else
-            {
-                $items = null;
-                $pages = null;                
-                $sumprice = null;
-                Yii::app()->user->setFlash('empty items', "В корзине нет товаров.");                
-            }
+      $items = null;
+      $pages = null;
+      $sumprice = null;        
+      $this->pageTitle = '"'.Yii::app()->name.'" - Корзина';        
+        if ( isset(Yii::app()->session['id']) && Yii::app()->session['id'] ) {
+          $items = Yii::app()->session['id'];
+          $criteria=new CDbCriteria;
+          $criteria->index = 'id';
+          $criteria->addInCondition('id',  array_keys($items)); 
+          $pages = new CPagination(Tovar::model()->count($criteria));
+          $pages->pageSize = 4;
+          $pages->applyLimit($criteria);        
+          $tovars = Tovar::model()->with('customfield1', 'customfield2', 'cover')->findAll($criteria); 
+          $sumprice = ContentModule::sumprice();           
+        } 
+        
+        if ($tovars === null) {
+          $tovars = null;
+          $pages = null;
+          $sumprice = null;
+          Yii::app()->user->setFlash('empty items', "В корзине нет товаров.");             
         }
-        else
-        {
-                $items = null;
-                $pages = null;
-                $sumprice = null;
-                Yii::app()->user->setFlash('empty items', "В корзине нет товаров.");            
-        }
-        $this->render('cart', array('model'=>$items, 'pages' => $pages, 'sumprice' => $sumprice));        
+        
+        $this->render('cart', array(
+          'model'=>$tovars,
+          'pages' => $pages,
+          'sumprice' => $sumprice,
+          'items' =>  $items
+        ));        
     }
     
     public function actionSaveitem()
     {
-        if($_POST['custom']){
-            $custom = Yii::app()->session['id'];
-            if(!is_array($custom[$_POST['id']])) unset($custom[$_POST['id']]);
-            $custom[$_POST['id']][$_POST['custom']]   = $_POST['quantity']; 
-            Yii::app()->session['id'] = $custom;                
-        }else{
-           $custom = Yii::app()->session['id'];
-           $custom[$_POST['id']] = $_POST['quantity']; 
-           Yii::app()->session['id'] = $custom; 
-        }         
-        $this->_rendercart();
+      if ( !isset($_GET['item']) || !isset($_GET['subitem']) || !isset($_GET['quantity']) )
+        throw new CHttpException(403, 'Доступ запрещен');
+       $item = $_GET['item'];
+       $subitem = $_GET['subitem'];
+       $quantity = $_GET['quantity'];
+       $items = Yii::app()->session['id'];
+       $current = $items[$item][$subitem];
+       $current['quantity'] = $_GET['quantity'];
+       $items[$item][$subitem] = $current;
+       Yii::app()->session['id'] = $items;
+       echo '{"message": "Изменения сохранены"}';
     } 
-    
+   
+    /**
+     * Что это?
+     */
     public function actionDeletecustomfield(){
         $custom = Yii::app()->session['id'];
         unset($custom[$_GET['id']][$_GET['field']]);
@@ -257,31 +272,31 @@ class StoreController extends Controller
     public function actionSaveorder(){        
         $this->pageTitle = '"'.Yii::app()->name.'" - Корзина';
         $order = new Order;
-        if(!Yii::app()->user->isGuest){ 
+        if (!Yii::app()->user->isGuest) { 
             $user = User::model()->findByPk(Yii::app()->user->id);
             $profile = $user->profile;            
             $order->person = $profile->firstname;
             $order->email = $user->email;
             $order->phone = $user->mob_phone;    
         }         
-        if(isset($_POST['Order'])){
+        if (isset($_POST['Order'])) {
             $order->attributes = $_POST['Order'];
             if($order->validate()){
-                $items = ContentModule::getItems();
+                $items = Yii::app()->session['id'];
                 if(Yii::app()->user->isGuest){
-                        $order->user_id = 0;
-                        $flashmessage = "Ваш заказ отправлен нам.<br/>Спасибо, что заказали у нас.<br/>Мы свяжемся с вами в самое ближайшее время.";
+                  $order->user_id = 0;
+                  $flashmessage = "Ваш заказ отправлен нам.<br/>Спасибо, что заказали у нас.<br/>Мы свяжемся с вами в самое ближайшее время.";
                 }else{        
-                        $order->user_id = Yii::app()->user->id;
-                        $flashmessage = "Ваш заказ сохранен и отправлен нам.<br/>Спасибо, что с нами.<br/>Мы свяжемся с вами в самое ближайшее время.";
+                  $order->user_id = Yii::app()->user->id;
+                  $flashmessage = "Ваш заказ сохранен и отправлен нам.<br/>Спасибо, что с нами.<br/>Мы свяжемся с вами в самое ближайшее время.";
                 }        
                 Sender::sendCartbyMailtoAdmin($items, $order);
-                Sender::sendCartbyMailtoUser($order->email,$items);
+                Sender::sendCartbyMailtoUser($order->email, $items);
                 Sender::sendSMS(Yii::app()->params['phonenumber'], 'Вы получили заказ на сумму: '.ContentModule::sumprice().' р', Yii::app()->name);
                 $order->save();
                 Yii::app()->user->setFlash('Order saved', $flashmessage);
-                $order->saveOrder($items);                
-                unset(Yii::app()->session['id'], Yii::app()->session['quant'],Yii::app()->session['custom']);  
+                $order->saveOrder($items, $order);                
+                unset(Yii::app()->session['id']);  
             }
         }
         $this->render('contactform', array('model' => $order));
@@ -300,14 +315,14 @@ class StoreController extends Controller
     
     public function actionDeleteorderitem()
     {
-        if(isset(Yii::app()->session['id'])){
-          $session =  Yii::app()->session['id'];
-          if(array_key_exists($_GET['id'], $session)){
-               unset($session[$_GET['id']]);
-               Yii::app()->session['id'] = $session;
-           }           
-           $this->redirect("/store/cart");
-        }
+      if ( !isset($_GET['item']) || !isset($_GET['subitem']) )
+        throw new CHttpException(403, 'Доступ запрещен');   
+      
+      if(isset(Yii::app()->session['id'])){
+        $session =  Yii::app()->session['id'];
+        unset( $session [ $_GET['item']][ $_GET['subitem']]);
+        $this->redirect("/store/cart");
+      }
     }
 }
 

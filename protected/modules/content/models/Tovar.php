@@ -32,6 +32,7 @@ class Tovar extends CActiveRecord
 		// will receive user inputs.
 		return array(
       //array('pic_name', 'file', 'types'=>'jpg,gif,png', 'maxSize'=>'204800', 'allowEmpty'=>true, 'on'=>'file'),
+      array('name', 'length', 'max'=>58),
       array('name,description,menu_id_item,instore,artikul,country,custom1,custom2', 'required'),
       array('price1, price2, price3, price4', 'default', 'value'  => 0),
       array('extended,tovartype', 'safe'),
@@ -48,16 +49,22 @@ class Tovar extends CActiveRecord
       'types' =>  array(self::BELONGS_TO, 'Tovartype', 'tovartype'),
       'items' =>  array(self::HAS_MANY, 'Orderitems', 'tovar_id'),
       'customfield1' =>  array(self::HAS_MANY, 'Customfield', 'tovar_id',
-        'on'  =>  'custom_id = :custom_id',
-        'params'  =>  array(':custom_id' => '1')
+        'on'  =>  'customfield1.custom_id = :custom_id',
+        'params'  =>  array(':custom_id' => '1'),
+        'index' => 'id'
       ),
       'customfield2' =>  array(self::HAS_MANY, 'Customfield', 'tovar_id',
-        'on'  =>  'custom_id = :custom_id',
-        'params'  =>  array(':custom_id' => '2')
+        'on'  =>  'customfield2.custom_id = :custom_id',
+        'params'  =>  array(':custom_id' => '2'),
+        'index' => 'id'
       ),      
       'customfields' =>  array(self::HAS_MANY, 'Customfield', 'tovar_id'),
       'menu'  =>  array(self::BELONGS_TO, 'NavigationItems', 'menu_id_item'),
-      'pictures'  =>  array(self::HAS_MANY, 'TovarPics', 'tovar_id')
+      'pictures'  =>  array(self::HAS_MANY, 'TovarPics', 'tovar_id'),
+      'cover'  =>  array(self::HAS_MANY, 'TovarPics', 'tovar_id',           
+        'on' =>  'is_cover = :is_cover',
+        'params'  =>  array('is_cover'  =>  '1')
+      ),
 		);		
 		return $relations;
 	}  

@@ -68,17 +68,31 @@ class Order extends CActiveRecord
 		);
 	}          
         
-        public function saveOrder($items)
-        {
-            $last = Yii::app()->db->lastInsertID; 
-            foreach ($items as $value) {
-                $model = new Orderitems;
+        public function saveOrder($items, $order)
+        {          
+          $last = $order->id; 
+          $transaction = Yii::app()->db->beginTransaction();
+          try {            
+            foreach ($items as $id => $item) {
+              foreach ($item as $properties) {            
+                $model = new Orderitems;  
                 $model->order_id = $last;
-                $model->tovar_id = $value['id'];
-                $model->quantity = $value['quantity'];
-                $model->custom = $value['custom'];                              
+                $model->tovar_id = $id;
+                if ( isset($properties['quantity']))
+                  $model->quantity = $properties['quantity'];
+                if ( isset($properties['param1']))
+                  $model->custom1 = $properties['param1'];   
+                if ( isset($properties['param2']))
+                  $model->custom2 = $properties['param2'];    
                 $model->save(); 
-            }            
+              }
+            }
+            $transaction->commit();
+          } 
+          catch (Exception $e) 
+          {
+            $transaction->rollback();
+          }
         }
         
         

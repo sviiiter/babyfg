@@ -2,6 +2,7 @@
 body,div,ul,li,h1,p{margin:0;padding:0}
 img{border:0}
 ul li{list-style:none}
+h1,h2,h3,h4,h5,h6{color:black}
 h1{font-size:33px;font-weight:normal;color:black}
 html,body{height:100%;width:100%;background:#FFAB00 url(kover.jpg) repeat top left fixed;color:#2E2E2E;font-family: 'PT Sans Narrow', sans-serif;}
 /* Header font-style: italic;*/
@@ -84,7 +85,7 @@ html,body{height:100%;width:100%;background:#FFAB00 url(kover.jpg) repeat top le
 	padding:5px 5px 0 5px;
 }
 .banner-maxwidth{width:900px !important}
-ul.horizontal .buy-button{position:relative;right:70%;width:71px;}
+ul.horizontal .buy-button{margin-left: 59%;width: 87px;}
 .horizontal-root .bx-prev{
 	background:url(prev_next.png) no-repeat 0 -15px !important;
 	height: 117px !important;
@@ -99,7 +100,7 @@ ul.horizontal .buy-button{position:relative;right:70%;width:71px;}
 	margin-top: -45px !important;
 	right: 24px !important;
 }
-.price{width:49%;position:relative;top: 14px;left:2px;font-size:1.3em;color:gray}
+.price{height:20%;width:49%;position:relative;top: 14px;left:2px;font-size:1.3em;color:gray}
 .grafic-menu{
     width:88%;
 	margin: 60px auto;
@@ -204,3 +205,8 @@ display:none;
 .pagintr{height: 40px;padding: 10px;font-size: 16px;margin-left:38px}
 .pagintr a{font-size: 16px;}
 .central-width{	width:80%;margin:0 auto;max-width:900px; /*вынести для IE*/}
+#notificate{display:none;position:fixed;left:20px;top:20px;z-index:4242;height:70px;font-size:30px;}
+.tovar_cart{background-color:white}
+li.active ul{display:block;}
+.parent ul li.active a{color:#333333; font-size: 22px}
+.preview{height:56%;}

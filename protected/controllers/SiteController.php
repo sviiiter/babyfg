@@ -6,8 +6,7 @@ class SiteController extends Controller
     
     public function actionIndex()
     {
-        $this->pageTitle = '"'.Yii::app()->name.'"-спортивное питание,сжигатели жира,купить протеин,креатин';
-        //Yii::app()->name.' - спортивное питание, доставка, доставка по Москве, фитнес, питание, креатин, протеин, креатин, гейнер, глютамин, жиросжигатели, сжигатели жира, протеин,спорт';
+        $this->pageTitle = '"'.Yii::app()->name.'"-магазин детской одежды';        
         $model = new Tovar;
         $result = $model->findAll(array('order' => 'id DESC', 'limit'=>9));
         $this->render('application.views.site.title', array('model'=>$result));                   

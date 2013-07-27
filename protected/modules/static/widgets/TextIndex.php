@@ -11,7 +11,6 @@ class TextIndex extends CWidget
     {
         $model = Proposals::model()->findByPk(1); 
         if(Yii::app()->getModule('user')->isAdmin()) echo CHtml::link('>>править',array('/static/proposals/maintext')); 
-        echo 
-        "<div itemscope itemtype='http://schema.org/Article'><span itemprop='articleBody'>".$model->indextext."</span></div>";
+        echo $model->indextext;
     }    
 }

@@ -16,7 +16,7 @@ else :
     <br/>
     <div class="row">
     <!--?php echo CHtml::activeLabel($model,'contacts'); ?--> 
-    <?php echo CHtml::activeTextArea($model,'indextext', array('rows'=>'23', 'class'=>'input-xlarge')); ?>
+    <?php echo CHtml::activeTextArea($model,'indextext', array('rows'=>25, 'class'=>'input-xxlarge')); ?>
     </div>          
     <br/>    
     <div class="row">

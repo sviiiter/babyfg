@@ -26,27 +26,23 @@ class ContentModule extends CWebModule
 			return false;
 	}
         
-        public static function getItems(){
+    public static function getItems(){
 			$items = array();
-            if(isset(Yii::app()->session['id'])){				
-                foreach(Yii::app()->session['id'] as $key=>$cartitem){                    
-                    if(!is_array($cartitem)){
-                        $bit['id'] = $key;
-                        $bit['quantity'] = $cartitem;
-                        $bit['custom'] = 'не задан';
-                        $items[] = $bit;
-                    }else{
-                        foreach ($cartitem as $cikey=>$civalue){
-                           $bit['id'] = $key;
-                           $bit['quantity'] = $civalue;
-                           $bit['custom'] = $cikey;   
-                           $items[] = $bit;
-                        }
-                    }
-                }                
-            }else $items = array();
-            return $items;
-        }
+      if ( isset(Yii::app()->session['id']) ) {				
+        foreach (Yii::app()->session['id'] as $key => $value) {
+          $item = explode('_', $key);              
+          array_push($item , $value);
+          $items[ $item[0] ][$key] = array(
+            'id' => (isset($item[0])) ? $item[0] : null,
+            'param1'  =>  (isset($item[1])) ? $item[1] : null,
+            'param2'  =>  (isset($item[2])) ? $item[2] : null,
+            'quantity'  =>  (isset($item[3])) ? $item[3] : null,
+          );
+          unset($item);
+        }                                  
+      }else $items = array();
+      return $items;
+    }
         
         /*public static function setParam($sessionparam, $cartitem)
         {
@@ -57,15 +53,15 @@ class ContentModule extends CWebModule
             return $param;
         }*/
         
-        public static function sumprice(){
-            $items = ContentModule::getItems();
-            $i = 0;
-            $sumprice = 0;            
-            foreach ($items as $value) {
-                $model = Tovar::model()->findByPk($value['id']);
-                $sumprice += $model->price * $items[$i]['quantity'];
-                $i++;  
-            }
-            return $sumprice;
-        }
+      public static function sumprice(){
+          $items = Yii::app()->session['id'];
+          $sumprice = 0;            
+          foreach ($items as $id => $properties) {
+            $model = Tovar::model()->findByPk($id);
+            foreach ($properties as $p) {
+              $sumprice += $model->price1 * $p['quantity'];
+            }            
+          }
+          return $sumprice;
+      }
 }

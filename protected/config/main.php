@@ -5,7 +5,7 @@ array(
 	'name'=>'BABYFG',
   'params' => array(
       'adminEmail' => 'haha.artur@mail.ru',
-      'phonenumber' => '79622496449'
+      //'phonenumber' => '79622496449'
   ),
   'language'=>'ru',
 	// preloading 'log' component
@@ -18,6 +18,7 @@ array(
 		'application.models.*',
     'application.helpers.*',
 		'application.components.*',
+    'application.components.widgets.*',
     'application.modules.user.models.*',
     'application.modules.user.components.*',
     'application.modules.user.controllers.*',    

@@ -10,12 +10,8 @@ class NewsBlock extends CWidget
     public function run()
     {
         // этот метод будет вызван внутри CBaseController::endWidget()
-    }
-    
-    public function last2news()
-    {
         $last2 = News::model()->recently()->findAll();        
-        CWidget::render('index', array('model' => $last2));
-    }    
+        CWidget::render('index', array('model' => $last2));      
+    }  
 }
-?>
+

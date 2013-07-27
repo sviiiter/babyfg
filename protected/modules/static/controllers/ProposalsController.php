@@ -23,7 +23,7 @@ class ProposalsController extends Controller
                 {
                     $model->image = md5($uploader->name).'.jpg';
                     if($model->save()){ 
-                        $uploader->saveAs($_SERVER['DOCUMENT_ROOT'] . '/baners/centralbanner/'.$model->image);
+                        $uploader->saveAs($_SERVER['DOCUMENT_ROOT'] . '/image/maincentral/'.$model->image);
                     }                     
                     Yii::app()->user->setFlash('baner saved', 'Банер сохранен');
                 }                                 

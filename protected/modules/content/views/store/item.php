@@ -34,12 +34,23 @@
         </span>		
         <?=$value->description; ?>
       </span>
+      <?php echo CHtml::beginForm('', 'post', array('id' => 'item-params')); ?>
       <?php echo CHtml::dropDownList('first_param', null, CHtml::listData( ($value['cus1_values']) ? $value['cus1_values'] : new Customfield, 'id', 'name'),
         array('empty' => 'Выбрать ' . $value->custom1, 'class'  =>  'border-radiused-wout-sh')
-      );?>
-      <?php echo CHtml::dropDownList('first_param', null, CHtml::listData( ($value['cus2_values']) ? $value['cus2_values'] : new Customfield, 'id', 'name'),
+      ); ?>
+      <?php echo CHtml::dropDownList('second_param', null, CHtml::listData( ($value['cus2_values']) ? $value['cus2_values'] : new Customfield, 'id', 'name'),
         array('empty' => 'Выбрать ' . $value->custom2, 'class'  =>  'border-radiused-wout-sh')
-      );?>      
+      ); ?>
+      <?php echo CHtml::dropDownList('quantity', null, array(
+          '1'  =>  '1',
+          '2'  =>  '2',
+          '3'  =>  '3',
+          '4'  =>  '4',
+          '5'  =>  '5',
+        ),
+        array('empty' => 'Выбрать количество', 'class'  =>  'border-radiused-wout-sh')
+      ); ?>      
+      <?php echo CHtml::endForm(); ?>
       <div class="tovar-price row">
         <div class="fontsize26 span1 prices-top">Цена:</div>
         <div class="prices span2 prices-top">
@@ -60,7 +71,8 @@
         echo CHtml::ajaxLink('<img src="/css/buy_large.png" />',array('/store/Addtovartocart', 'id'=>$value->id), 
           array(
             'type' => 'GET',
-            'cache' => true,                                    
+            'cache' => true,
+            'data'  =>  'js: $(\'#item-params\').serialize()',
             'success' => '
               function(data)
               {
@@ -84,152 +96,29 @@
       ?>       
     </div>
   </p>
-</div>
-     
+</div>     
 <div class="fontsize26">Мы рекомендуем:</div>
-<div id="slider_w2" class="horizontal-root">
-  <ul id="slider2" class="horizontal">
-    <li>
-      <a href="#2">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/1.jpg" class="preview"><img class="img-item" src="pics/1.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#3">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/2.jpg" class="preview"><img class="img-item" src="pics/2.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>	
-    <li>
-      <a href="#2">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/1.jpg" class="preview"><img class="img-item" src="pics/1.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#3">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/2.jpg" class="preview"><img class="img-item" src="pics/2.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>		
-    <li>
-      <a href="#2">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/1.jpg" class="preview"><img class="img-item" src="pics/1.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#3">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/2.jpg" class="preview"><img class="img-item" src="pics/2.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>						
-  </ul>
-</div>	
+<div class="horizontal-root">
+  <?php $this->widget('HorizontalSlider', array(
+    'widgettheme' => 'recommended',
+    'sliderId'  =>  'slider_w4'
+  )); ?>
+</div>
 <div class="fontsize39">Хиты продаж:</div>
-<div id="slider_w2" class="horizontal-root">
-  <ul id="slider3" class="horizontal">
-    <li>
-      <a href="#2">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/1.jpg" class="preview"><img class="img-item" src="pics/1.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#3">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/2.jpg" class="preview"><img class="img-item" src="pics/2.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>	
-    <li>
-      <a href="#2">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/1.jpg" class="preview"><img class="img-item" src="pics/1.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#3">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/2.jpg" class="preview"><img class="img-item" src="pics/2.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>		
-    <li>
-      <a href="#2">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/1.jpg" class="preview"><img class="img-item" src="pics/1.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#3">
-        <div class="sl2_item border-radiused">
-          <span class="cap-img-item">Шарф и шапка обыкновенные</span>
-          <div data="pics/2.jpg" class="preview"><img class="img-item" src="pics/2.jpg" alt="" /></div>
-          <div class="price">5000 р</div>
-          <img class="buy-button" src="css/but-kupit.jpg" alt="" />
-        </div>
-      </a>
-    </li>							
-  </ul>
-</div>			
+<div class="horizontal-root">
+  <?php $this->widget('HorizontalSlider', array(
+    'caption' => 'Хиты продаж:',
+    'fontclass' => 'fontsize39',
+    'widgettheme' => 'hits',
+    'sliderId'  =>  'slider_w5'
+  )); ?>
+</div>
+
 <?php 
   Yii::app()->clientscript->registerCssFile(Yii::app()->request->baseUrl.'/js/fancybox/source/jquery.fancybox.css', 'screen, projection'); 
   Yii::app()->clientscript->registerCssFile(Yii::app()->request->baseUrl.'/css/tovar.css', 'screen, projection');
   Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/fancybox/source/jquery.fancybox.pack.js');
   Yii::app()->clientscript->registerScript('bxsl','
-		  $(\'#slider3\').bxSlider({
-			  mode: \'horizontal\',
-			  minSlides: 3,
-			  maxSlides: 3,
-			  slideWidth: 150,
-			  slideMargin: 0,
-			  moveSlides: 1,
-			});	    
-
     $(".fancybox").fancybox({
 				openEffect:"fade" 
     });

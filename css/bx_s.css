@@ -21,21 +21,20 @@ ul.horizontal li{
     line-height: none;
 }
 ul.horizontal li a{
-	text-decoration: none;
-	color: black;
-	font-size: 1.5em;
-	line-height: 20px;
+    color: black;
+    font-size: 1.2em;
+    font-weight: bolder;
+    line-height: 20px;
 }
 /*ul.horizontal{
     margin: 10px auto;
 }*/
 
 ul.horizontal .img-item{
-    height: 139px;
     margin: 8px auto auto 10px;
     max-width: inherit;
     vertical-align: bottom;
-    width: 139px;
+    width: 118px;
 }
 
 /*div#sl_wrap2 div{

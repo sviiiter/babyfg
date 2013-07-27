@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -18,7 +18,7 @@
   <script type="text/javascript" src="js/bootstrap.js"></script-->    
   <?php Yii::app()->bootstrap; ?>  
   <meta name="keywords" lang="ru" content="<?php echo Yii::app()->controller->addwords_start;?>" /> 
-  <meta name="description" lang="ru" content="<?=(isset($this->description)) ? $this->description : 'Спортивный магазин питания в Москве, м. Преображенская площадь. Доставка по всей России.'?>" />
+  <meta name="description" lang="ru" content="<?=(isset($this->description)) ? $this->description : 'Магазин детской одежды. Доставка по всей России.'?>" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">  
   <!--script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script-->
@@ -50,7 +50,7 @@
             </div>			
             <!--Content left-->
             <div class="sidebar_left">
-              <div class="sl_menu"><?php $this->widget('application.modules.content.widgets.Menu');?></div>				
+              <div class="sl_menu"><?php $this->widget('application.modules.content.widgets.Menu', array('category' => $this->category));?></div>				
               <div class="banners">
                 <img src="img/left1.jpg" />
                 <img src="img/left2.jpg" />
@@ -119,35 +119,7 @@
     </div>
     <!--Header-->
     <div id="header">
-<?php 
-if (!Yii::app()->user->isGuest && Yii::app()->getModule('user')->isAdmin()) {
-  $this->widget('bootstrap.widgets.TbNavbar', array(
-    'type'  =>  null, // null or 'inverse'
-    'brand' =>  Yii::app()->name,
-    'brandUrl'  =>  $this->createUrl('/'),
-    'collapse'  =>  true, // requires bootstrap-responsive.css
-    'items' =>  array(
-      array(
-        'class' =>  'bootstrap.widgets.TbMenu',
-        'items' =>  array(
-          array('label' =>  'Левое меню', 'url'=>array('/manage/manage/CreateMenuItem')),
-          array('label' =>  'Каталог', 'url'=>"#", 
-            'items'=>array(
-              array('label' =>  'Добавить товар', 'url'=>array('/manage/manage/edititem')),
-        )),        
-        ),
-      ),
-      array(
-        'class' =>  'bootstrap.widgets.TbMenu',
-        'htmlOptions' =>  array('class' =>  'pull-right'),
-        'items' =>  array(
-          array('label' =>  'Выйти', 'url'=>array('/logout'))        
-        )
-      )
-    ),
-  )); 
-}
-?>        
+      <?php $this->renderPartial('//site/admin_tab'); ?>
         <div class="wrap clear">
           <!--Logo-->
           <div class="phones">
@@ -160,7 +132,7 @@ if (!Yii::app()->user->isGuest && Yii::app()->getModule('user')->isAdmin()) {
               <!--a href="#" class="enter"><span class="point-left">Войти</span> <span class="point">.</span> <span class="point-right">Регистрация</span></a-->
               <?php echo CHtml::link('Личный кабинет', array('/user/admin'), array('class' => 'enter')); ?>
               <!--a href="#" class="enter">Личный кабинет</a-->
-              <div class="link"><a id="cart" href="#22"><div class="quan">2</div></a></div>
+              <div class="link"><a id="cart" href="/store/cart"><div class="quan"><?php echo sizeof(Yii::app()->session['id']);?></div></a></div>
             </div>
           </div>
           <div class="lenta">

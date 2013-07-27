@@ -1,4 +1,4 @@
-<h1>Редактировать "Спортивное питание"</h1>
+<h1>Редактировать "Статью главной"</h1>
 <?php if(Yii::app()->user->hasFlash('success')):?>
     <div class="alert-info"><?=Yii::app()->user->getFlash('success')?></div>
 <?php endif;?>

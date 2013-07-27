@@ -14,7 +14,7 @@ $this->breadcrumbs=array(
   <a href="<?=$this->createUrl('/store/' . $value->id);?>" itemtype="http://schema.org/Product">
     <div class="item border-radiused">	
       <div class="tovar-pic"><?=CHtml::image((isset($value->pictures[0]->picname)) ? '/image/thumbs_middle/' . $value->pictures[0]->picname : $picture = '/images/nofoto.png'); ?></div>      
-      <p><span class="cap-img-item"><?=(mb_strlen($value->name, "utf-8") > 22) ? (mb_substr($value->name, 0, 22, "utf-8") . '...') : $value->name; ?></span></p>
+      <div class="tovar-name"><p><span class="cap-img-item"><?php echo $value->name; ?></span></p></div>
       <!--div class="simple-desc"-->
         <!--?=(mb_strlen($value->description, "utf-8") > 22) ? (mb_substr($value->description, 0, 22, "utf-8") . '...') : $value->description;?-->
       <!--/div-->									

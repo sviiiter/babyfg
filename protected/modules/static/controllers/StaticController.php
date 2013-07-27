@@ -60,12 +60,12 @@ class StaticController extends Controller
         $this->breadcrumbs=array(
                 $model->caption 
         ); 
-        $this->addwords_start = str_replace('.', '', $model->caption) . ', магазин спортивного питания, спортивное питание, спортпит';          
+        $this->addwords_start = str_replace('.', '', $model->caption) . ', магазин детской одежды, детская одежда';          
         $this->pageTitle = str_replace('.', '', $model->caption)  . "." 
                 . str_replace(array('&nbsp;','&mdash;'), ' ', strip_tags(substr($model->description, 0, strpos($model->description, '.'))))
                 . "|\"" . Yii::app()->name . "\"";
         $this->pageTitle = str_replace('  ', ' ', $this->pageTitle);
-        $this->description = str_replace('.', '', $model->caption) . ". Купить в магазине спортивного питания " . Yii::app()->name ;        
+        $this->description = str_replace('.', '', $model->caption) . ". Купить в магазине детской одежды " . Yii::app()->name ;        
         $this->render('article', array('model'=>$model));
     }
 
@@ -164,33 +164,23 @@ class StaticController extends Controller
                 throw new CHttpException(404,'The requested page does not exist.');
         }  
         
-       public function actionAddnews()
-       {
-           $this->pageTitle = '"'.Yii::app()->name.'" - Новости'; 
-           $this->breadcrumbs=array(
-                    'Новости'=>'/static/static/news',
-                    'Добавить новость' 
-            );               
-           if(!Yii::app()->user->isGuest)
-            {            
-                $user = User::model()->findByPk(Yii::app()->user->id);
-                if($user->status != 1)
-                {
-                    throw new CHttpException(404,'The requested page does not exist.');
-                }           
-                $model = new News;
-                        if(isset($_POST['News']))
-                        {
-                            $model->attributes = $_POST['News'];
-                                if($model->validate())
-                                {
-                                    $model->isNewRecord ? $model->save() : $model->update(); 
-                                    Yii::app()->user->setFlash('news saved', 'Новость сохранена.');
-                                }
-                        }                        
-                    $this->render('news/editnews', array('model' => $model));    
-            }
-       }      
+      public function actionAddnews()
+      {
+        $this->pageTitle = '"'.Yii::app()->name.'" - Новости'; 
+        $this->breadcrumbs=array(
+          'Новости'=>'/static/static/news',
+          'Добавить новость' 
+         );                       
+        $model = new News;
+        if (isset($_POST['News'])) {
+          $model->attributes = $_POST['News'];
+          if ($model->validate()) {
+            $model->isNewRecord ? $model->save() : $model->update(); 
+            Yii::app()->user->setFlash('news saved', 'Новость сохранена.');
+          }
+        }                        
+        $this->render('news/editnews', array('model' => $model));    
+      }      
        
        public function actionNews()
        {

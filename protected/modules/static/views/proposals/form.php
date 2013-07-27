@@ -17,8 +17,8 @@ else :
 <div>    
 <?php echo CHtml::errorSummary($model,'<div class="alert alert-error span4">','</div>'); ?>
 <br/>
-        <?php echo CHtml::activeLabel($model,'image'); ?>
-        <?php echo CHtml::activeFileField($model,'image',array('size'=>60,'maxlength'=>128)); ?>        
+  <?php echo CHtml::activeLabel($model,'image'); ?>
+  <?php echo CHtml::activeFileField($model,'image',array('size'=>60,'maxlength'=>128)); ?>        
 </div> 
 
 <div> <!--class="row buttons"-->

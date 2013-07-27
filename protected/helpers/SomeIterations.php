@@ -33,9 +33,7 @@ class SomeIterations
       $splited_key = explode('_', $key);
       $items[$splited_key[0]] = $splited_key[1];    
       $disabled[$splited_key[0]] = array('disabled'=>true);
-      if ($value !== 0) {
-        //$splited_key = explode('_', $key);
-        //$items[$splited_key[0]] = $splited_key[1];                 
+      if ($value !== 0) {               
         foreach ($value as $child) {
           $splited_val = explode('_', $child);
           $items[$splited_val[0]] = '----' . $splited_val[1];
@@ -51,9 +49,7 @@ class SomeIterations
       $items[$splited_key[0]] = $splited_key[1];    
       
       if ($value !== 0) {
-        $disabled[$splited_key[0]] = array('disabled'=>true);
-        //$splited_key = explode('_', $key);
-        //$items[$splited_key[0]] = $splited_key[1];                 
+        $disabled[$splited_key[0]] = array('disabled'=>true);                
         foreach ($value as $child) {
           $splited_val = explode('_', $child);
           $items[$splited_val[0]] = '----' . $splited_val[1];
