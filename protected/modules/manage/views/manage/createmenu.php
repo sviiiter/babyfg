@@ -25,6 +25,7 @@
   )); ?></p>
   <p><?=  CHtml::activeTextField($editmodel, 'name',array('class' => 'input-xxlarge', 'placeholder' => 'Введите название категории')); ?></p>
   <p><?= CHtml::activeFileField($editmodel,'picture',array('size'=>60,'maxlength'=>128)); ?> </p>
+  <i class="icon-info-sign"></i>&nbsp;Файл должен быть размером: ширина 213px, высота: 209px. 
   <?php echo CHtml::image('/image/menu/' . $editmodel->picture); ?>
   <p><?=  CHtml::button('Сохранить', array('type' => 'submit'))?></p>
 <?= CHtml::endForm(); ?>

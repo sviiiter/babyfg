@@ -64,12 +64,6 @@ $this->breadcrumbs=array(
 		<?php echo $form->error($model,'email'); ?>
 	</div>
         
-        <div>
-		<?php echo $form->labelEx($model,'avatar'); ?>
-		<?php echo $form->fileField($model,'avatar',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'avatar'); ?>            
-        </div>    
-
 	<div> <!--class="row buttons"-->
 		<?php echo CHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save'), array('class'=>'btn btn-inverse')); ?>
 	</div>

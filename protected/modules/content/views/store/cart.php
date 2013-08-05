@@ -8,10 +8,10 @@
 <?php else: ?>
   <?php foreach ($model as $item): ?>    
     <div class="tovar_cart border-radiused">  
-      <?php echo CHtml::link(RenderPieces::createImg($item->cover[0]->picname), '/store/' . $item->id); ?>
+      <?php echo CHtml::link(RenderPieces::createImg( (isset($item->cover[0]->picname)) ? $item->cover[0]->picname : false ), '/store/' . $item->id); ?>
       <div class="textd">
         <p>Наименование : <?=$item->name;?></p>
-        <p>Цена : <?=$item->price1;?></p>                
+        <p>Цена : <?=$item->price;?></p>                
       </div>
       <?php foreach ($items[$item->id] as $p_k => $properties): ?>
         <b><?php echo ($properties['param1']) ? $item->custom1 . ':' . $item->customfield1[ $properties['param1']]->name : ''; ?></b>
@@ -32,11 +32,8 @@
         )); ?></p>        
       <?php endforeach; ?>
     </div>
-    <br/><br/>
   <?php endforeach; ?>
-  <br />
   <div class="row span1 alert alert-block" style="position:fixed; right: 0px; top: 250px;z-index:4242">Суммарная стоимость: <div id="sumprice"><span style="font-size: 22px;"><?=$sumprice?>&nbsp;р</span></div></div>
-  <br/>
   <div class="pagintr">
   <?php $this->widget('CLinkPager', array( 'pages'=>$pages));?>
   </div>

@@ -19,15 +19,16 @@ class Company extends CActiveRecord
 		// will receive user inputs.
 		return array(
                         //array('phone', 'match', 'pattern' => '/^[\d+\s]+$/','message' => 'Поле должно только цифры'),
-                        array('contacts, payment', 'safe'),
+                        array('contacts, payment, measurement', 'safe'),
                     );
         }  
         
 	public function attributeLabels()
 	{
 		return array(
-                        'contacts'=>'Контактная информация',
-                        'payment'=>'Оплата и доставка'
+      'contacts'  =>  'Контактная информация',
+      'payment' =>  'Оплата и доставка',
+      'measurement'  =>  'Размеры'  
 		);
 	}          
 }

@@ -2,7 +2,9 @@
 $this->breadcrumbs=array(
 	UserModule::t("Profile"),
 );
-?><h2><?php echo UserModule::t('Your profile'); ?></h2>
+?>
+<div class="span5 fontsize20 profile-wrap">
+<h2><?php echo UserModule::t('Your profile'); ?></h2>
 <?php echo $this->renderPartial('menu'); ?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
@@ -12,10 +14,12 @@ $this->breadcrumbs=array(
 <?php endif; ?>
 <table class="dataGrid">
 <tr>
-	<th <!--class="label"--><?php echo CHtml::encode($model->getAttributeLabel('username')); ?>
-</th>
-    <td><?php echo CHtml::encode($model->username); ?>
-</td>
+	<th>
+    <?php echo CHtml::encode($model->getAttributeLabel('username')); ?>
+  </th>
+  <td>
+    <?php echo CHtml::encode($model->username); ?>
+  </td>
 </tr>
 <?php 
 		$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
@@ -23,52 +27,83 @@ $this->breadcrumbs=array(
 			foreach($profileFields as $field) {				
 			?>
 <tr>
-	<th <!--class="label"--><?php echo CHtml::encode(UserModule::t($field->title)); ?>
-</th>
-    <td><?php echo (($field->widgetView($profile))?$field->widgetView($profile):CHtml::encode((($field->range)?Profile::range($field->range,$profile->getAttribute($field->varname)):$profile->getAttribute($field->varname)))); ?>
-</td>
+	<th>
+    <?php echo CHtml::encode(UserModule::t($field->title)); ?>
+  </th>
+  <td>
+    <?php echo (($field->widgetView($profile))?$field->widgetView($profile):CHtml::encode((($field->range)?Profile::range($field->range,$profile->getAttribute($field->varname)):$profile->getAttribute($field->varname)))); ?>
+  </td>
 </tr>
 			<?php
 			}
 		}
 ?>
 <tr>
-	<th <!--class="label"--><?php echo CHtml::encode($model->getAttributeLabel('email')); ?>
-</th>
-    <td><?php echo CHtml::encode($model->email); ?>
-</td>
+	<th>
+    <?php echo CHtml::encode($model->getAttributeLabel('email')); ?>
+  </th>
+  <td>
+    <?php echo CHtml::encode($model->email); ?>
+  </td>
 <tr>
-	<th <!--class="label"--><?php echo CHtml::encode($model->getAttributeLabel('mob_phone')); ?>
-</th>
-    <td><?php echo CHtml::encode($model->mob_phone); ?>
-</td>
+	<th>
+    <?php echo CHtml::encode($model->getAttributeLabel('mob_phone')); ?>
+  </th>
+  <td>
+    <?php echo CHtml::encode($model->mob_phone); ?>
+  </td>
 </tr>
 <tr>
-	<th <!--class="label"--><?php echo CHtml::encode($model->getAttributeLabel('createtime')); ?>
-</th>
-    <td><?php echo date("d.m.Y H:i:s",$model->createtime); ?>
-</td>
+	<th>
+    <?php echo CHtml::encode($model->getAttributeLabel('createtime')); ?>
+  </th>
+  <td>
+    <?php echo date("d.m.Y H:i:s",$model->createtime); ?>
+  </td>
 </tr>
 <tr>
-	<th <!--class="label"--><?php echo CHtml::encode($model->getAttributeLabel('lastvisit')); ?>
-</th>
-    <td><?php echo date("d.m.Y H:i:s",$model->lastvisit); ?>
-</td>
+	<th>
+    <?php echo CHtml::encode($model->getAttributeLabel('lastvisit')); ?>
+  </th>
+  <td>
+    <?php echo date("d.m.Y H:i:s",$model->lastvisit); ?>
+  </td>
 </tr>
 <tr>
-	<th <!--class="label"--><?php echo CHtml::encode($model->getAttributeLabel('status')); ?>
-</th>
-    <td><?php echo CHtml::encode(User::itemAlias("UserStatus",$model->status));
-    ?>
-</td>
+	<th>
+    <?php echo CHtml::encode($model->getAttributeLabel('status')); ?>
+  </th>
+  <td>
+    <?php echo CHtml::encode(User::itemAlias("UserStatus",$model->status)); ?>
+  </td>
 </tr>
-
 <tr>
-	<th <!--class="label"--><?php echo CHtml::encode($model->getAttributeLabel('avatar')); ?>
-</th>
-    <td><?php
-    echo CHtml::image(Yii::app()->request->baseUrl."/images/".$model->avatar);
-    ?>
-</td>
+	<th>
+    <?php if ($model->kids): ?>
+    <?php switch ( true) {
+        case in_array( sizeof($model->kids), array('1')):
+          $kids_text = 'ребенок';
+          break;
+        case in_array( sizeof($model->kids), array('2', '3', '4')):
+          $kids_text = 'ребенка';
+          break;        
+        default:
+          'детей';
+    } ?>
+      У вас <?php echo sizeof($model->kids) . ' ' . $kids_text; ?>.
+    <?php endif; ?>
+  </th>
+  <td>
+    
+  </td>
 </tr>
 </table>
+</div>
+<?php 
+Yii::app()->clientscript->registerCss('registration', 
+        '
+            .profile-wrap tr, .profile-wrap li {
+              height: 30px;
+            }
+        ');
+?>

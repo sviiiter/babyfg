@@ -25,6 +25,11 @@ $this->breadcrumbs=array(
 			'type'=>'raw',
 			'value' => 'CHtml::link(CHtml::encode($data->username),array("admin/view","id"=>$data->id))',
 		),
+		array(
+			'name' => 'Роль',
+			'type'=>'raw',
+			'value' => '$data->rolename[$data->role]',
+		),    
 		/*array(
 			'name'=>'email',
 			'type'=>'raw',
@@ -48,9 +53,13 @@ $this->breadcrumbs=array(
 			'value'=>'User::itemAlias("UserStatus",$data->status)',
 		),
 		array(
+			'name'  =>  'Детей',
+			'value' =>  'sizeof($data->kids)',
+		),    
+		/*array(
 			'name'=>'superuser',
 			'value'=>'User::itemAlias("AdminStatus",$data->superuser)',
-		),
+		),*/
 		array(
 			'class'=>'CButtonColumn',
 		),

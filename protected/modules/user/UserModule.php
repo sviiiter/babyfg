@@ -105,6 +105,21 @@ class UserModule extends CWebModule
 		// you may place code here to customize the module or the application
 
 		// import the module-level models and components
+    if (preg_match('!(:?user)!', Yii::app()->request->requestUri)) {
+      Yii::app()->clientscript->registerCss('registration', '
+        .in {
+          font-size: 20px;
+          line-height: 18px;
+        }
+        .in li {
+          height: 30px;
+        }   
+        .in label{
+          font-size: 20px;
+          line-height: 18px;      
+        }
+      '); 
+    }
 		$this->setImport(array(
 			'user.models.*',
 			'user.components.*',
@@ -217,13 +232,13 @@ class UserModule extends CWebModule
 	 */
 	public static function user($id=0) {
 		if ($id) 
-			return User::model()->active()->findbyPk($id);
+			return User::model()->active()->with('kids')->findbyPk($id);
 		else {
 			if(Yii::app()->user->isGuest) {
 				return false;
 			} else {
 				if (!self::$_user)
-					self::$_user = User::model()->active()->findbyPk(Yii::app()->user->id);
+					self::$_user = User::model()->active()->with('kids')->findbyPk(Yii::app()->user->id);
 				return self::$_user;
 			}
 		}

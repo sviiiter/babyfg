@@ -25,9 +25,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'superuser'); ?>
-		<?php echo CHtml::activeDropDownList($model,'superuser',User::itemAlias('AdminStatus')); ?>
-		<?php echo CHtml::error($model,'superuser'); ?>
+		<?php echo CHtml::activeLabelEx($model,'role'); ?>
+		<?php echo CHtml::activeDropDownList($model,'role', $model->rolename); ?>
+		<?php echo CHtml::error($model,'role'); ?>
 	</div>
 
 	<div class="row">

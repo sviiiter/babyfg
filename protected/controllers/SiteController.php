@@ -5,7 +5,7 @@ class SiteController extends Controller
     public $breadcrumbs = array();
     
     public function actionIndex()
-    {
+    {    
         $this->pageTitle = '"'.Yii::app()->name.'"-магазин детской одежды';        
         $model = new Tovar;
         $result = $model->findAll(array('order' => 'id DESC', 'limit'=>9));

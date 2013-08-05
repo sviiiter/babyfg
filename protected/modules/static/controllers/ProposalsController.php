@@ -15,7 +15,7 @@ class ProposalsController extends Controller
                 'Добавить центральный баннер',
         );              
         $model =  new Mainbanner;    
-            Yii::app()->user->setFlash('set W H', 'Загружайте картинку размером ширины 575px и высотой 257px.');
+            Yii::app()->user->setFlash('set W H', 'Загружайте картинку размером ширины 772px и высотой 383px.');
             if(isset($_POST['Mainbanner']))
             {                
                 $uploader=CUploadedFile::getInstance($model,'image');
@@ -37,16 +37,16 @@ class ProposalsController extends Controller
         $this->breadcrumbs=array(
                 'Добавить левый баннер',
         );           
-            $model =  Bannerleft::model()->findByPk(1); 
-            Yii::app()->user->setFlash('set W H', 'Загружайте картинку размером ширины 159px и высотой 240px.');
+            $model =  new Bannerleft;
+            Yii::app()->user->setFlash('set W H', 'Загружайте картинку размером ширины 227px. Высота не принципиальна.');
             if(isset($_POST['Bannerleft']))
             {                
                 $uploader=CUploadedFile::getInstance($model,'image');
                 if($model->validate())
                 {
                     $model->image = md5($uploader->name).'.jpg';
-                    if($model->update()){ 
-                        $uploader->saveAs($_SERVER['DOCUMENT_ROOT'] . '/baners/leftbanner/'.$model->image);
+                    if($model->save()){ 
+                        $uploader->saveAs($_SERVER['DOCUMENT_ROOT'] . '/image/leftcolumn/'.$model->image);
                     }                     
                     Yii::app()->user->setFlash('baner saved', 'Банер сохранен');
                 }                                

@@ -22,10 +22,10 @@ class ManageController extends Controller
               $model->custom_id = $_GET['custom'];
               if ($model->validate()) {
                 $model->save();
-                Yii::app()->user->setFlash('item saved successufuly', 'Вкус "' . $_POST['Customfield']['name'] . '" сохранен');
+                Yii::app()->user->setFlash('item saved successufuly', '"' . $_POST['Customfield']['name'] . '" сохранен');
               }
             }
-        $tovar = Tovar::model()->findbyPk($_GET['id']);
+        $tovar = Tovar::model()->forsale()->findbyPk($_GET['id']);
         $this->render('edit_custom',array('tovar' =>  $tovar, 'model' => $model,'g_id' => $_GET['id'], 'custom_id' => $_GET['custom']));
       }
   }
@@ -51,7 +51,7 @@ class ManageController extends Controller
     $tovar = new Tovar;
     $pictures = new TovarPics;
     if ($id) {
-      $item = $tovar->with('pictures')->findByPk($id);   
+      $item = $tovar->with('pictures')->forsale()->findByPk($id);   
     } else {
       $item = $tovar;
       if (!isset($_POST['Tovar'])) {
@@ -132,17 +132,19 @@ class ManageController extends Controller
     if (!Yii::app()->user->isGuest) { 
       $this->pageTitle = '"'.Yii::app()->name.'" - Редактировать товар';
       $tovar = new Tovar;
-      $item = $tovar->findByPk($_GET['id']); 
-      $id = $item->menu_id_item;
-      if($item->pic_name){
+      $item = $tovar->forsale()->findByPk($_GET['id']); 
+      $item->is_deleted = 1;
+      $item->save();
+      //$id = $item->menu_id_item;
+      /*if($item->pic_name){
           $file = 'baners/'.$item->pic_name;
           $thumb = 'baners/thumbs/'.$item->pic_name;
           if(file_exists($file)) unlink($file);
           if(file_exists($thumb)) unlink($thumb);
-      }
-      $item->delete();
-      Customfield::model()->deleteAll('tovar_id=:tovar_id', array(':tovar_id'=>$_GET['id']));
-      $this->redirect("/store?menu=" . $id);                
+      }*/
+      //$item->delete();
+      //Customfield::model()->deleteAll('tovar_id=:tovar_id', array(':tovar_id'=>$_GET['id']));
+      $this->redirect("/store?menu=" . $item->menu_id_item);                
     }
   }
 
@@ -211,7 +213,7 @@ class ManageController extends Controller
               $criteria=new CDbCriteria;
               if(isset($_GET['id']))
               {
-                  $criteria->condition = 'user_id='.$_GET['id'];
+                  $criteria->condition = 'user_id=' . $_GET['id'];
                   $this->breadcrumbs=array(
                           'Заказы пользователя',
                   );      
@@ -234,10 +236,12 @@ class ManageController extends Controller
               }
 
               $criteria->with=array(
-                  'orderitems.tovars'
+                'orderitems.tovars',
+                'orderitems.customfield1',
+                'orderitems.customfield2'
               );
               $pages=new CPagination(Order::model()->count($criteria));
-              $pages->pageSize = 6;
+              $pages->pageSize = 10;
               $pages->applyLimit($criteria);                
               $orders = Order::model()->findAll($criteria);
               //$orders = Order::model()->with('orderitems.tovars')->findAll('user_id=:user_id', array(':user_id' => Yii::app()->user->id));
@@ -272,20 +276,48 @@ class ManageController extends Controller
 
       if(!Yii::app()->user->isGuest)
       {
-          $criteria=new CDbCriteria;
-          $criteria->condition = 'order_id = '.$_GET['id'];
-          $criteria->with=array(
-              'tovars'
-          );
-          $pages=new CPagination(Orderitems::model()->count($criteria));
-          $pages->pageSize = 3;
-          $pages->applyLimit($criteria);
-          $order = Orderitems::model()->findAll($criteria);
-          $this->render('orderview', array('model' => $order,'pages' => $pages));
+          $order = Order::model()->findByPk( Yii::app()->request->getParam('id'));        
+          $this->render('orderview', array('model' => $order));//,'pages' => $pages
       }  
       else
           $this->redirect("/index.php");            
   }
+  
+  public function actionDownloadOrders()
+  {   
+    if (Yii::app()->user->role != User::ADMIN) {
+      throw new CHttpException(403, 'Доступ запрещен');
+    }
+      $id = ( isset($_GET['id'])) ? Yii::app()->request->getParam('id') : Yii::app()->user->id;
+      
+      $criteria= new CDbCriteria;
+      
+      if ( isset( $_GET['all'])) {  
+        $criteria->order ='time DESC';
+        $user = 'all';
+      } else {
+        $criteria->condition = 'user_id = :user_id';
+        $criteria->params = array('user_id' =>  $id);
+        $user = User::model()->findByPk($id);
+      }
+      
+      $criteria->with=array(
+        'orderitems.tovars',
+        'orderitems.customfield1',
+        'orderitems.customfield2'
+      );              
+      $orders = Order::model()->findAll($criteria);
+      SomeIterations::toExcelOrders($orders, $user); 
+  }  
+  
+  public function actionDownloadDetails()
+  {   
+    if ( Yii::app()->user->role != User::ADMIN || ( !isset($_GET['id']))) {
+      throw new CHttpException(403, 'Доступ запрещен');
+    }
+      $order = Order::model()->findByPk( Yii::app()->request->getParam('id'));       
+      SomeIterations::toExcelDetails($order); 
+  }   
   
   /**
    *  Создает,редактирует левое меню
@@ -344,5 +376,5 @@ class ManageController extends Controller
       'disabled' => $menu['disabled'],
       'editmodel' => (isset($editmodel)) ? $editmodel : $model
     ));
-  }
+  }  
 }

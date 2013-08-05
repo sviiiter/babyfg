@@ -51,9 +51,22 @@ $this->breadcrumbs=array(
 		array(
 			'name' => 'status',
 			'value' => User::itemAlias("UserStatus",$model->status),
-		)
+		),
+		array(
+			'name'  =>  'Детей',
+			'value' =>  sizeof($model->kids),
+		)        
 	);
-	
+	$i = 0;
+  foreach ($model->kids as $k) {
+    array_push($attributes,
+      array(
+        'name'  => ($i + 1) . '. Имя, дата рождения, пол: ',
+        'value' =>  $k->name . ', ' . $k->birth . ', ' . UserKids::model()->checkSex($k->sex)
+    ));
+    $i++;
+  }
+  
 	$this->widget('zii.widgets.CDetailView', array(
 		'data'=>$model,
 		'attributes'=>$attributes,

@@ -74,6 +74,9 @@ array(
   ),
 	// application components
 	'components'=>array(
+    'excel'=>array(
+      'class'=>'application.extensions.phpExcel.Classes.PHPExcel',
+    ),      
     'cache'=>array(
       'cachePath' => 'runtime/cache',
       'class' => 'CFileCache',
@@ -117,7 +120,7 @@ array(
         '<controller:store>/<action:[^\d]\w+>/id/<id:\d+>' => '/content/<controller>/<action>/id/<id>',
         '<controller:store>/<action:[^\d]\w+>/menu/<id:\d+>/field/<field:.+>' => '/content/<controller>/<action>/menu/<id>',
         '<controller:store>/<id:\d+>' => '/content/<controller>/item/id/<id>',
-        '<action:feedback|contacts|payment>' => 'static/static/<action>',
+        '<action:feedback|contacts|payment|news|measurement>' => 'static/static/<action>',
         '<action:news>/<id:\d+>' => 'static/static/<action>/id/<id>',
         '<action:recovery>'=>'/user/recovery/<action>',
         '<action:registration|login|logout>'=>'/user/<action>',

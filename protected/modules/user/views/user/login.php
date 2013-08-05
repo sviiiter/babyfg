@@ -1,4 +1,5 @@
 <!--noindex-->
+<div class="span5 fontsize20 login-wrap">
 <?php
 $this->pageTitle='"'.Yii::app()->name.'" - '.UserModule::t("Login");
 $this->breadcrumbs=array(
@@ -16,14 +17,18 @@ $this->breadcrumbs=array(
 
 <?php endif; ?>
 
-<p><?php echo UserModule::t("Please fill out the following form with your login credentials:"); ?></p>
+<p class="fontsize16"><?php echo UserModule::t("Please fill out the following form with your login credentials:"); ?></p>
 
 <div class="form">
 <?php echo CHtml::beginForm(); ?>
 
-	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
+	<p class="note fontsize16"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 	
-	<?php echo CHtml::errorSummary($model); ?>
+  <?php if ($model->errors): ?>
+    <div class="alert alert-danger">
+      <?php echo CHtml::errorSummary($model); ?>
+    </div>
+  <?php endif; ?>
 	
 	<div>  
 		<?php echo CHtml::activeLabelEx($model,'username'); ?>
@@ -43,7 +48,7 @@ $this->breadcrumbs=array(
 	
 	<div> 
 		<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
-		<?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
+		<?php echo CHtml::activeLabelEx($model,'rememberMe', array('class' => 'fontsize16')); ?>
 	</div>
 
 	<div> 
@@ -77,5 +82,16 @@ $form = new CForm(array(
         ),
     ),
 ), $model);
+?>
+</div>
+<?php 
+Yii::app()->clientscript->registerCss('registration', 
+        '
+            .login-wrap * {
+            font-size: 20px;
+            line-height: 18px;
+            }
+            .fontsize16{font-size: 16px !important;}
+        ');
 ?>
 <!--/noindex-->

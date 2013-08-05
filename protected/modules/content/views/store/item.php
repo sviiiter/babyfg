@@ -54,38 +54,40 @@
       <div class="tovar-price row">
         <div class="fontsize26 span1 prices-top">Цена:</div>
         <div class="prices span2 prices-top">
-          <div class="oldprice"><?= intval($value->price1); ?> р</div>
-          <div class="newprice"><?= intval($value->price2); ?> р</div>
+          <?php echo $value->blockprice; ?>
         </div>
       </div>
     </div>
   </div>  
   <div class="row">
     <div class="availability span4">
-      <?php if ((int)$value->instore === 1): ?>
+      <!-- if ((int)$value->instore === 0): >
         <div class="alert alert-error border-radiused-wout-sh"><br/>Нет в наличии</div>
-      <?php endif; ?>
+      < endif; ?-->
     </div>
     <div class="buy-large span2">
       <?php $rand = rand(); 
-        echo CHtml::ajaxLink('<img src="/css/buy_large.png" />',array('/store/Addtovartocart', 'id'=>$value->id), 
-          array(
-            'type' => 'GET',
-            'cache' => true,
-            'data'  =>  'js: $(\'#item-params\').serialize()',
-            'success' => '
-              function(data)
-              {
-                data = JSON.parse(data);
-                $("#' . $rand . '").html(data.myimg);
-                $(".quan").html(data.session_count);
-              }
-              '
-            ),
-            array(
-                'id' => $rand,
-                'class'=>'alink'                
-        )); ?>       
+        echo ((int)$value->instore === 1) 
+          ? CHtml::ajaxLink('<img src="/css/buy_large.png" />',array('/store/Addtovartocart', 'id'=>$value->id), 
+              array(
+                'type' => 'GET',
+                'cache' => true,
+                'data'  =>  'js: $(\'#item-params\').serialize()',
+                'success' => '
+                  function(data)
+                  {
+                    data = JSON.parse(data);
+                    $("#' . $rand . '").html(data.myimg);
+                    $(".quan").html(data.session_count);
+                  }
+                  '
+                ),
+                array(
+                    'id' => $rand,
+                    'class'=>'alink'                
+            )) 
+          : CHtml::image('/css/not_in_store.png');       
+      ?>       
     </div>
   </div>
   <p>

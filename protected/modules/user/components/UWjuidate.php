@@ -67,7 +67,7 @@ class UWjuidate {
 		$cs->registerCssFile($baseUrl.'/css/'.$this->params['ui-theme'].'/jquery-ui.css');
 		$cs->registerScriptFile($baseUrl.'/js/jquery-ui.min.js');
 		
-		$language = $this->params['language'];
+		$language = 'ru';//$this->params['language'];
 		if ($language!='en') {
 			$js = "jQuery('#{$id}').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['{$language}'], {$options}));";
 			$cs->registerScriptFile($baseUrl.'/js/jquery-ui-i18n.min.js');

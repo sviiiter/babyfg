@@ -59,7 +59,7 @@ class ContentModule extends CWebModule
           foreach ($items as $id => $properties) {
             $model = Tovar::model()->findByPk($id);
             foreach ($properties as $p) {
-              $sumprice += $model->price1 * $p['quantity'];
+              $sumprice += $model->price * $p['quantity'];
             }            
           }
           return $sumprice;

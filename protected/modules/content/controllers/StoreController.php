@@ -30,7 +30,7 @@ class StoreController extends Controller
         $tovar = Tovar::model()->with(array(
           'pictures' => array('order' => 'is_cover DESC'),
           'customfields'
-        ))->findByPk($id);
+        ))->forsale()->findByPk($id);
         $this->category = $tovar->menu_id_item;
         $custom1 = array();
         $custom2 = array();
@@ -89,7 +89,7 @@ class StoreController extends Controller
         $pages=new CPagination(Tovar::model()->with($with_option)->count($criteria));
         $pages->pageSize = 12;
         $pages->applyLimit($criteria);        
-        $tovar = Tovar::model()->with($with_option)->findAll($criteria);
+        $tovar = Tovar::model()->with($with_option)->forsale()->findAll($criteria);
         if(!$tovar) Yii::app()->user->setFlash('no result', 'Нет товаров.');        
         $this->render('index', array('model'=>$tovar, 'pages' => $pages, 'user' => $user));  
         unset(Yii::app()->session['tovartype']);        
@@ -124,7 +124,7 @@ class StoreController extends Controller
         $tovar = Tovar::model()->with(array('menu','pictures' => array(
           'condition' =>  'is_cover=:is_cover',
           'params'  =>  array('is_cover'  =>  '1')
-        )))->findAll($criteria);
+        )))->forsale()->findAll($criteria);
         if (!$tovar) Yii::app()->user->setFlash('no result', 'Нет товаров.');        
         $this->render('index', array('model'=>$tovar, 'pages' => $pages, 'user' => $user));  
     }      
@@ -170,7 +170,7 @@ class StoreController extends Controller
         $pages->pageSize = 12;
         $pages->applyLimit($criteria);
 
-        $tovar = Tovar::model()->with($with_option)->findAll($criteria);  
+        $tovar = Tovar::model()->with($with_option)->forsale()->findAll($criteria);  
         if(!$tovar)
         {
             Yii::app()->user->setFlash('no result', 'У производителя нет товаров.');
@@ -208,7 +208,7 @@ class StoreController extends Controller
           $pages = new CPagination(Tovar::model()->count($criteria));
           $pages->pageSize = 4;
           $pages->applyLimit($criteria);        
-          $tovars = Tovar::model()->with('customfield1', 'customfield2', 'cover')->findAll($criteria); 
+          $tovars = Tovar::model()->with('customfield1', 'customfield2', 'cover')->forsale()->findAll($criteria); 
           $sumprice = ContentModule::sumprice();           
         } 
         
@@ -218,7 +218,7 @@ class StoreController extends Controller
           $sumprice = null;
           Yii::app()->user->setFlash('empty items', "В корзине нет товаров.");             
         }
-        
+
         $this->render('cart', array(
           'model'=>$tovars,
           'pages' => $pages,
@@ -307,7 +307,7 @@ class StoreController extends Controller
         $order = new Order;
         if(isset(Yii::app()->db->lastInsertID))
         {
-            var_dump(Yii::app()->db->lastInsertID);die();
+            //var_dump(Yii::app()->db->lastInsertID);die();
             $model = $order->findByPk(Yii::app()->db->lastInsertID);        
         }
         else  $model = $order;            

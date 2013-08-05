@@ -38,11 +38,13 @@ class AdminController extends Controller
 	public function actionAdmin()
 	{
 		$this->pageTitle = Yii::app()->name.' - Управление пользователями';
-                $dataProvider=new CActiveDataProvider('User', array(
+    $dataProvider=new CActiveDataProvider('User', array(
 			'pagination'=>array(
 				'pageSize'=>Yii::app()->controller->module->user_page_size,
 			),
-		));
+      'criteria'  =>  new CDbCriteria( array(
+        'with'  =>  'kids'
+    ))));
 
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
@@ -56,7 +58,7 @@ class AdminController extends Controller
 	public function actionView()
 	{
 		$this->pageTitle = Yii::app()->name.' - Просмотр профиля';
-                $model = $this->loadModel();
+    $model = $this->loadModel();
 		$this->render('view',array(
 			'model'=>$model,
 		));
@@ -158,7 +160,7 @@ class AdminController extends Controller
 		if($this->_model===null)
 		{
 			if(isset($_GET['id']))
-				$this->_model=User::model()->notsafe()->findbyPk($_GET['id']);
+				$this->_model=User::model()->notsafe()->with('kids')->findbyPk($_GET['id']);
 			if($this->_model===null)
 				throw new CHttpException(404,'The requested page does not exist.');
 		}

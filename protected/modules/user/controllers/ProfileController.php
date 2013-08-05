@@ -14,10 +14,10 @@ class ProfileController extends Controller
 	public function actionProfile()
 	{			
 		$model = $this->loadUser();
-	    $this->render('profile',array(
-	    	'model'=>$model,
-			'profile'=>$model->profile,
-	    ));
+    $this->render('profile',array(
+      'model'=>$model,
+      'profile'=>$model->profile,
+    ));
 	}
 
 
@@ -42,21 +42,7 @@ class ProfileController extends Controller
                         $model->attributes=$_POST['User'];
 			$profile->attributes=$_POST['Profile'];
 			$model->setScenario('avatar');
-                            if($model->validate()&&$profile->validate()) {
-                                if($_FILES['User']['tmp_name']['avatar'])
-                                {
-                                    $uploaded_file = $_FILES['User']['tmp_name'];
-                                    $uploaded_filename = $_FILES['User']['name'];
-                                    $filename = md5($uploaded_filename['avatar']);
-                                        Yii::app()->ih
-                                        ->load($uploaded_file['avatar'])
-                                        ->thumb(53, 58)
-                                        ->save($_SERVER['DOCUMENT_ROOT'] . '/images/thumbs/'.$filename.'.jpg')
-                                        ->reload($uploaded_file['avatar'])
-                                        ->thumb(100, 100)
-                                        ->save($_SERVER['DOCUMENT_ROOT'] . '/images/'.$filename.'.jpg');  
-                                $model->avatar = $filename.'.jpg';  
-                                }
+      if($model->validate()&&$profile->validate()) {
 				$model->save();
 				$profile->save();
 				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));

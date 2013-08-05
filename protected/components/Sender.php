@@ -6,21 +6,31 @@ class Sender
     {
         $i = 0;
         $sumprice = 0;
-        $model = Tovar::model()->with('customfield1', 'customfield2')->findAllByPk(array_keys($items));
-        foreach ($model as $id => $item) {            
-            $string[] = "Название : " . $item->name . ",<br/> Цена : " . $item->price1 . " р <br/>";
-            foreach ($item as $properties) {
-              $string[$i] .= ( isset($properties['param1'])) ? $item->custom1 . " : " . $item->customfield1[ $properties['param1']]->name . "<br/>" : '';              
-              $string[$i] .= ( isset($properties['param2'])) ? $item->custom2 . " : " . $item->customfield2[ $properties['param2']]->name . "<br/>" : '';
+        $model = Tovar::model()->with('customfields')->findAllByPk(array_keys($items));
+        foreach ($model as $id => $item) {
+            $customs = self::splitCustomFields($item->customfields);
+            $string[] = "Название : " . $item->name . ",<br/> Цена : " . $item->price . " р <br/>";
+            foreach ($items[$item->id] as $properties) {              
+              $string[$i] .= ( isset($properties['param1']) && strlen($properties['param1']) > 0) ? $item->custom1 . " : " . $customs['customfield1'][ $properties['param1']]->name . "<br/>" : '';              
+              $string[$i] .= ( isset($properties['param2']) && strlen($properties['param2']) > 0) ? $item->custom2 . " : " . $customs['customfield2'][ $properties['param2']]->name . "<br/>" : '';
               $string[$i] .= ( isset($properties['quantity'])) ? 'Количество : ' . $properties['quantity'] . '<br/>' : '';
             }    
             //$sumprice += $model->price1 * $items[$i]['quantity'];
             $i++;
-        }        
+        }       
         $message = "<b>Заказ</b> >><br/>".implode('<br/>-------------<br/>', $string).".</br><b>Общая стоимость: " . ContentModule::sumprice() . " р</b>";
         return $message;
-    }        
+    }  
     
+    protected static function splitCustomFields($customfields)
+    {
+      $fields = array();
+      foreach ($customfields as $custom) {
+        ($custom->custom_id == 1) ? $fields['customfield1'][$custom->id] = $custom : $fields['customfield2'][$custom->id] = $custom;
+      }
+      return $fields;
+    }
+
     public static function sendCartbyMailtoAdmin($items, $model)
     {
       $person = "Контактная информация:<br/>
@@ -54,7 +64,8 @@ class Sender
     public static function sendSMS($phone, $message, $sender)
     {
         require_once dirname(__FILE__).'../../sms/sms24x7.php';                
-        $response = smsapi_push_msg_nologin('gorillamen@mail.ru', 'RqKh6yw', $phone, $message, array("sender_name"=>$sender));
+        $response = true;
+        //$response = smsapi_push_msg_nologin('gorillamen@mail.ru', 'RqKh6yw', $phone, $message, array("sender_name"=>$sender));
         return $response;
     }
     

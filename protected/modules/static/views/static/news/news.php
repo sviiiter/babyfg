@@ -11,7 +11,7 @@ unset($date, $newdmy);
 <br/>
 <div>
     <?php
-    echo CHtml::link(substr($value->text, 0 , 120).'...', '/static/static/news/id/'.$value->id,array('style' => 'color: gray','itemprop' => 'url'));
+    echo CHtml::link(substr($value->text, 0 , 120).'...', '/news/' . $value->id, array('style' => 'color: gray','itemprop' => 'url'));
     ?>
 </div>
 <br/>

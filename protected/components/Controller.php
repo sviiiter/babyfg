@@ -30,7 +30,7 @@ class Controller extends CController
         if (preg_match('!(:?manage/manage)!', Yii::app()->request->requestUri)) {       
           Yii::app()->clientscript->registerCssFile('/css/main_addon.css');
         }
-        if (preg_match('!(:?store/item/id)|(:?static/static/news)|(:?static/static/article/id/)|(:?content/store/)|(:?user/recovery)|(:?user/registration)|(:?user/login)|(:?user/logout)|(:?static/static/feedback)|(:?static/static/contacts)|(:?static/static/payment)!', Yii::app()->request->requestUri))
-                $this->redirect('/');        
+        if (preg_match('!(:?store/item/id)|(:?static/static/news)|(:?static/static/article/id/)|(:?content/store/)|(:?user/recovery)|(:?user/login)|(:?user/logout)|(:?static/static/feedback)|(:?static/static/contacts)|(:?static/static/payment)!', Yii::app()->request->requestUri))
+                $this->redirect('/');        //|(:?user/registration)
     }
 }

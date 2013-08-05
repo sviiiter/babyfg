@@ -5,8 +5,14 @@ class User extends CActiveRecord
 	const STATUS_NOACTIVE=0;
 	const STATUS_ACTIVE=1;
 	const STATUS_BANED=-1;
-	
-	/**
+  
+  const ADMIN = 'admin';
+  const SUPER = 'super';
+  const SECOND = 'second';
+  const FIRST = 'first';
+
+
+  /**
 	 * The followings are the available columns in table 'users':
 	 * @var integer $id
 	 * @var string $username
@@ -44,8 +50,8 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		
-		return ((Yii::app()->getModule('user')->isAdmin())?array(
-			array('mob_phone', 'safe'),
+		return ((Yii::app()->getModule('user')->isAdmin())? array(
+			array('mob_phone, role', 'safe'),
 			array('username', 'length', 'max'=>20, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")),
 			array('password', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
 			array('email', 'email'),
@@ -57,7 +63,7 @@ class User extends CActiveRecord
 			array('username, email, createtime, lastvisit, superuser, status', 'required'),
 			array('createtime, lastvisit, superuser, status', 'numerical', 'integerOnly'=>true),
 		):((Yii::app()->user->id==$this->id)?array(
-			array('username, email, mob_phone', 'required'),
+			array('username, email, mob_phone, role', 'required'),
 			array('username', 'length', 'max'=>20, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")),
 			array('email', 'email'),
 			array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),
@@ -73,9 +79,10 @@ class User extends CActiveRecord
 	public function relations()
 	{
 		$relations = array(
-			'profile'=>array(self::HAS_ONE, 'Profile', 'user_id'),
-                        'orders'=>array(self::HAS_MANY, 'Order', 'user_id'),
-                        //'lots' => array(self::MANY_MANY, 'Lots', 'tbl_lots_to_user(user_id,lot_id)'),               
+			'profile' =>  array(self::HAS_ONE, 'Profile', 'user_id'),
+      'orders'  =>  array(self::HAS_MANY, 'Order', 'user_id'),
+      'kids'  =>  array(self::HAS_MANY, 'UserKids', 'user_id')
+      //'lots' => array(self::MANY_MANY, 'Lots', 'tbl_lots_to_user(user_id,lot_id)'),               
 		);
 		if (isset(Yii::app()->getModule('user')->relations)) $relations = array_merge($relations,Yii::app()->getModule('user')->relations);
 		return $relations;
@@ -98,8 +105,9 @@ class User extends CActiveRecord
 			'lastvisit' => UserModule::t("Last visit"),
 			'superuser' => UserModule::t("Superuser"),
 			'status' => UserModule::t("Status"),
-                        'mob_phone' => UserModule::t("Phone"),
-                        'avatar' => UserModule::t("Avatar"),
+      'mob_phone' => UserModule::t("Phone"),
+      'avatar' => UserModule::t("Avatar"),
+      'role'  =>  'Роль'
 		);
 	}
 	
@@ -127,7 +135,7 @@ class User extends CActiveRecord
 	public function defaultScope()
     {
         return array(
-            'select' => 'id, avatar, username, email, createtime, lastvisit, superuser, status, mob_phone',
+            'select' => 'id, avatar, username, email, createtime, lastvisit, superuser, status, mob_phone, role',
         );
     }
 	
@@ -148,4 +156,14 @@ class User extends CActiveRecord
 		else
 			return isset($_items[$type]) ? $_items[$type] : false;
 	}
+  
+  public function getRoleName()
+  {
+    return array(
+      'admin' =>  'Администратор',
+      'super' => 'Суперпользователь',
+      'second'  =>  'Привелегированный',
+      'first' =>  'Зарегестрированный'
+    );
+  }  
 }

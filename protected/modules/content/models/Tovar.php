@@ -35,8 +35,8 @@ class Tovar extends CActiveRecord
       array('name', 'length', 'max'=>58),
       array('name,description,menu_id_item,instore,artikul,country,custom1,custom2', 'required'),
       array('price1, price2, price3, price4', 'default', 'value'  => 0),
-      array('extended,tovartype', 'safe'),
-      array('id, name, price, brand, pic_name, description, extended, custom, tovartype', 'safe', 'on'=>'search'),
+      array('extended,tovartype, is_deleted', 'safe'),
+      array('id, name, brand, pic_name, description, extended, custom, tovartype', 'safe', 'on'=>'search'),
     );
   }
         
@@ -73,8 +73,12 @@ class Tovar extends CActiveRecord
   {
       return array(
           'notsafe'=>array(
-              'select' => 'id,name,quantity,price,brand,pic_name,description,extended',
+              'select' => 'id,name,quantity,brand,pic_name,description,extended',
           ),
+        'forsale' => array(
+          'condition' =>  'is_deleted = :is_deleted',
+          'params'  =>  array(':is_deleted' => '0')
+        )
       );
   }
         
@@ -135,6 +139,50 @@ class Tovar extends CActiveRecord
       'pagination' => array('pageSize' => 10),
 			'criteria'=>$criteria,
 		));
-	}        
+	} 
+  
+  public function getPrice()
+  {
+    switch (Yii::app()->user->role) {
+      case (User::FIRST):
+        return $this->price2;
+        break;
+      case (User::SECOND):
+        return $this->price3;
+        break;
+      case (User::SUPER):
+        return $this->price4;
+        break;      
+      default:
+        return $this->price1;
+        break;
+    }
+  }  
+  
+  public function getOldprice()
+  {
+    switch (Yii::app()->user->role) {
+      case (User::FIRST):
+        return $this->price1;
+        break;
+      case (User::SECOND):
+        return $this->price2;
+        break;
+      case (User::SUPER):
+        return $this->price3;
+        break;      
+      default:
+        return false;
+        break;
+    }
+  }    
+  
+  public function getBlockPrice()
+  {
+    return ( in_array(Yii::app()->user->role, array(User::ADMIN, null)) )  
+      ? '<div class="oldprice" style="text-decoration:none">' . intval($this->price) . ' р</div>'
+      : '<div class="oldprice">' . intval($this->price1) . ' р</div><div class="newprice">' . intval($this->price) . ' р</div>';
+  }
+  
 }
 ?>

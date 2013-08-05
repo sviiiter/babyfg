@@ -43,8 +43,8 @@ html,body{height:100%;width:100%;background:#FFAB00 url(kover.jpg) repeat top le
 .clear {display: block;}
 /* MY */
 .sidebar_right img{
-	 width:145px; /* Длина фигуры */
-	 height:126px; /* Высота фигуры */
+	 width:124px; /* Длина фигуры */
+	/* height:126px; /* Высота фигуры */
 	 color: #0000; /* цвет текста */
 	 background:#FF7F00; /* фон блока */
 	 /*padding: 5px; /* внутренние отступы */
@@ -102,17 +102,19 @@ ul.horizontal .buy-button{margin-left: 59%;width: 87px;}
 }
 .price{height:20%;width:49%;position:relative;top: 14px;left:2px;font-size:1.3em;color:gray}
 .grafic-menu{
-    width:88%;
-	margin: 60px auto;
-	max-width: 920px; /*вынести для IE*/
+    margin: 36px auto;
+    max-width: 903px;
+    width: 82%;
 }
 .grafic-menu .item{
-heigh:150px;
-margin:10px auto auto 22px;
-float:left;
+    float: left;
+    margin-top: 23px;
+    text-align: center;
+    width: 33%;
 }
 .grafic-menu .item img{
-margin: 0 auto 0 11px;
+    height: 96%;
+    width: 90%;
 }
 .border-radiused{
 	border: 1px gray solid; /* стили рамки */
@@ -206,7 +208,15 @@ display:none;
 .pagintr a{font-size: 16px;}
 .central-width{	width:80%;margin:0 auto;max-width:900px; /*вынести для IE*/}
 #notificate{display:none;position:fixed;left:20px;top:20px;z-index:4242;height:70px;font-size:30px;}
-.tovar_cart{background-color:white}
+.tovar_cart{background-color:white;padding:10px;}
 li.active ul{display:block;}
 .parent ul li.active a{color:#333333; font-size: 22px}
 .preview{height:56%;}
+.sidebar_right .my-right a{
+  /*display: block;
+  width: 145px;
+  height:126px;*/
+}
+.lenta .active a{color:#49afcd}
+.fontsize20{font-size: 20px !important;line-height: 18px;}
+.fontsize16{font-size: 16px !important;line-height: 18px;}

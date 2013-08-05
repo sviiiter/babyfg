@@ -1,97 +1,65 @@
 <h1>Заказ</h1>
-<?php if(Yii::app()->getModule('user')->isAdmin()) :
-{    
-    $info = Order::model()->findByPk($model[0]->order_id);
-?>
-<b>Заказчик:</b> <br/>
-Имя: <?=$info->person;?><br/>
-Телефон: <?=$info->phone;?><br/>
-Адрес доставки: <?=$info->adress;?><br/>
-Электронная почта: <?=$info->email;?><br/>
-Дополнительная информация: <?=$info->additionalinfo;?><br/>
-
-
-<?php } endif;?>
-<?php
-foreach ($model as $value): 
-    $tovars = $value->tovars;
-    ?>
-<div class="tovar_cart">  
-<?php     if($tovars):
-    {  ?>    
-    <div class="img">
-    <div class="tovar_img">
-        <?php
-            if(strlen($tovars->pic_name)>0)
-                $picture = '/baners/thumbs/'.$tovars->pic_name;
-            else $picture = '/images/nofoto.png';        
-    
-            echo CHtml::link('<img src="'.$picture.'" />',
-            '/store/'.$tovars->id
-            );     
-            ?>
-    </div>
-    </div>
-    <div class="cart_description">
-        <div class="textd">
-            Наименование : <?=$tovars->name;?> 
-            <br />
-            Колличество в упаковке : <?=$tovars->quantity;?>
-            <br />
-            Цена : <?=$tovars->price;?>    
-            <br />
-            Производитель: <?=$tovars->brand;?> 
-            <br />
-            <?=$tovars->custom;?>: <?=$value->custom;?>             
-        </div>
-        <div class="inputd">
-        <div>Колличество:</div>
-        <div>
-            <form>              
-            <input id="<?=$value->id?>" class="inputquan" type="text" name="answer" value="<?=$value->quantity;?>">
-            <br />
-            </form>
-        </div>
-        <br/>
-        <br/>
-        <br/>
-        <div class="savebut">
-        <?php
-            $rand = rand();
-            echo CHtml::ajaxLink("Добавить в корзину",array('/store/Addtovartocart', 'id'=>$tovars->id), 
-                                        array(
-                                'type' => 'GET',
-                                'cache' => true,
-                                'success' => '
-                                    function(data)
-                                    {
-                                    $("#cart_q").html(data);
-                                    $("#'.$rand.'").parent().css("background", "none");
-                                    $("#'.$rand.'").parent().html("в корзине");
-                                    }
-                                    '
-                                ),
-                        array(
-                            'id' => $rand,
-                            'class' => 'btn btn-small btn-inverse'
-                        )
-                        );       
-        ?>
-        </div>        
-        </div>
-
-    </div>
-<?php } 
-else :
-    echo 'товара нет в наличии';
-
-endif; ?>    
-</div>
-<?php endforeach;?>
-<br />
-<div class="pagintr">
-<?php $this->widget('CLinkPager', array( 'pages'=>$pages));?>
-</div>
+<?php if ( Yii::app()->getModule('user')->isAdmin()): ?>
+  <p><?php 
+    $params = array('/manage/manage/downloaddetails');
+    $params['id'] = $_GET['id'];
+    echo CHtml::link( 'Зкспортировать в Excel', $params); 
+  ?></p>
+  <b>Заказчик:</b> <br/>
+  Имя: <?=$model->person;?><br/>
+  Телефон: <?=$model->phone;?><br/>
+  Адрес доставки: <?=$model->adress;?><br/>
+  Электронная почта: <?=$model->email;?><br/>
+  Дополнительная информация: <?=$model->additionalinfo;?><br/>
+<?php endif; ?>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+	'dataProvider'=>new CArrayDataProvider($model->orderitems, array('pagination'=>array('pageSize'=>10))), 
+	'columns'=>array(
+		array(
+			'name' => '№ заказа',
+			'type'=>'raw',
+			'value' => '$data->order_id',
+		),   
+		array(
+			'name' => 'Обложка',
+			'type'=>'raw',
+			'value' => 'CHtml::image((isset($data->tovars->cover[0]->picname)) ? \'/image/thumbs_middle/\' . $data->tovars->cover[0]->picname : \'/images/nofoto.png\');',
+		),    
+		array(
+			'name' => 'Артикул',
+			'type'=>'raw',
+			'value' => '$data->tovars->artikul',
+		),
+		array(
+			'name' => 'Наименование',
+			'type'=>'raw',
+			'value' => '$data->tovars->name',
+		),
+		array(
+			'name' => 'Параметр 1',
+			'type'=>'raw',
+			'value' => '$data->tovars->custom1 . \': \' . ((isset($data->customfield1)) ? $data->customfield1->name : "")',
+		),    
+		array(
+			'name' => 'Параметр 2',
+			'type'=>'raw',
+			'value' => '$data->tovars->custom2 . \': \' . ((isset($data->customfield2)) ? $data->customfield2->name : "")',
+		),
+		array(
+			'name' => 'Количество',
+			'type'=>'raw',
+			'value' => '$data->quantity',
+		),      
+		array(
+			'name' => 'Цена',
+			'type'=>'raw',
+			'value' => '$data->tovars->price . \' р\'',
+		),       
+))); ?>
+<b>Общая сумма заказа: <?php echo $model->sumprice; ?> р</b>
+<!--div class="pagintr">
+<php $this->widget('CLinkPager', array( 'pages'=>$pages));?>
+</div-->
 
 
 

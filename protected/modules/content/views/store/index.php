@@ -19,7 +19,7 @@ $this->breadcrumbs=array(
         <!--?=(mb_strlen($value->description, "utf-8") > 22) ? (mb_substr($value->description, 0, 22, "utf-8") . '...') : $value->description;?-->
       <!--/div-->									
       <div class="row">
-        <div class="price span1"><?=intval($value->price1);?> р</div>
+        <div class="price span1"><?=intval($value->price);?> р</div>
         <img class="buy-button span2" src="/css/but-kupit.jpg" alt="" />
       </div>
     </div>

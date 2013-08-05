@@ -11,6 +11,7 @@
 			  controls: false,
 			  auto: true,
 			  autoControls: false,
-			  pause: 7000
+			  pause: 7000,
+        infiniteLoop: true
 			});	  
 '); ?>

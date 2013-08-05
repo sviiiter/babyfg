@@ -8,12 +8,12 @@ $this->breadcrumbs=array(
 <h1><?php echo UserModule::t("Registration"); ?></h1>
 
 <?php if(Yii::app()->user->hasFlash('registration')): ?>
-<div class="success">
+<div class="success fontsize20">
 <?php echo Yii::app()->user->getFlash('registration'); ?>
 </div>
 <?php else: ?>
 
-<div class="span5">
+<div class="span5 fontsize20">
 <?php $form=$this->beginWidget('UActiveForm', array(
 	'id'=>'registration-form',
 	'enableAjaxValidation'=>true,
@@ -21,9 +21,12 @@ $this->breadcrumbs=array(
 	'htmlOptions' => array('enctype'=>'multipart/form-data'),
 )); ?>
 
-	<p class="note" style="font-size: 8pt"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
-	
-	<?php echo $form->errorSummary(array($model,$profile)); ?>
+	<p class="note" style="font-size: 11pt"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
+  <?php if ($model->errors || $profile->errors): ?>
+    <div class="alert alert-danger">
+      <?php echo $form->errorSummary(array($model,$profile)); ?>
+    </div>
+  <?php endif; ?>	
 	
 	<div>  <!-- class="row"-->
 	<?php echo $form->labelEx($model,'username'); ?>
@@ -43,30 +46,61 @@ $this->breadcrumbs=array(
 	<?php echo $form->error($model,'mob_phone'); ?>
 	</div>        
         
-<?php 
-		$profileFields=$profile->getFields();
-		if ($profileFields) {
-			foreach($profileFields as $field) {
-			?>
-	<div>   <!-- class="row"-->
-		<?php echo $form->labelEx($profile,$field->varname); ?>
-		<?php 
-		if ($field->widgetEdit($profile)) {
-			echo $field->widgetEdit($profile);
-		} elseif ($field->range) {
-			echo $form->dropDownList($profile,$field->varname,Profile::range($field->range));
-		} elseif ($field->field_type=="TEXT") {
-			echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
-		} else {
-			echo $form->textField($profile,$field->varname,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
-		}
-		 ?>
-		<?php echo $form->error($profile,$field->varname); ?>
-	</div>	
-			<?php
-			}
-		}
-?>
+  <?php 
+      $profileFields=$profile->getFields();
+      if ($profileFields) {
+        foreach($profileFields as $field) {
+        ?>
+          <div>   <!-- class="row"-->
+            <?php echo $form->labelEx($profile,$field->varname); ?>
+            <?php 
+            if ($field->widgetEdit($profile)) {
+              echo $field->widgetEdit($profile);
+            } elseif ($field->range) {
+              echo $form->dropDownList($profile,$field->varname,Profile::range($field->range));
+            } elseif ($field->field_type=="TEXT") {
+              echo$form->textArea($profile,$field->varname,array('rows'=>6, 'cols'=>50));
+            } else {
+              echo $form->textField($profile,$field->varname,array('size'=>60,'maxlength'=>(($field->field_size)?$field->field_size:255)));
+            }
+             ?>
+            <?php echo $form->error($profile,$field->varname); ?>
+          </div>	
+        <?php
+        }
+      }
+  ?>
+
+  <p>    
+    <div class="well"> 
+      <h3>Дети:</h3>
+      <p class="fontsize16"><i class="icon-info-sign"></i>&nbsp;Укажите дату рождения ваших детей, если желаете.</p>
+      <?php for ($i = 0; $i < 3; $i++): ?>   
+        <div class="alert alert-success">
+        <p><?php echo $i; ?>.</p>
+        <?php echo CHtml::activeLabel($kids, 'birth'); ?>
+        <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+          'name'  =>  'UserKids[birth][' . $i . ']',
+          'model' => $kids,
+          //'attribute' => 'birth',               
+          'options'=>array(
+              'showAnim'=>'fold',
+              'dateFormat'=>'yy-mm-dd',
+              ),
+          'htmlOptions'=>array(
+              'style'=>'height:20px;'
+          ),
+          'language' => 'ru',
+          'cssFile'=>false,
+        )); ?>
+        <?php echo CHtml::activeLabel($kids, 'sex'); ?>
+        <?php echo CHtml::radioButtonList( 'UserKids[sex][' . $i . ']', '0', array(UserKids::checkSex(UserKids::MALE), UserKids::checkSex(UserKids::LADY))); ?>
+        <?php echo CHtml::activeLabel($kids, 'name'); ?>
+        <?php echo CHtml::textField('UserKids[name][' . $i . ']', null, array('placeholder' => UserKids::model()->getAttributeLabel('name'))); ?>
+        </div>
+      <?php endfor; ?>
+    </div>   
+  </p>
 	<?php if (UserModule::doCaptcha('registration')): ?>
 	<div> <!-- class="row"-->
 		<?php echo $form->labelEx($model,'verifyCode'); ?>
@@ -75,7 +109,7 @@ $this->breadcrumbs=array(
 		<?php echo $form->textField($model,'verifyCode'); ?>
 		<?php echo $form->error($model,'verifyCode'); ?>
 		
-		<p class="hint" style="font-size: 8pt"><?php echo UserModule::t("Please enter the letters as they are shown in the image above."); ?>
+		<p class="hint" style="font-size: 10pt"><?php echo UserModule::t("Please enter the letters as they are shown in the image above."); ?>
 		<br/><?php echo UserModule::t("Letters are not case-sensitive."); ?></p>
 	</div>
 	<?php endif; ?>
@@ -91,9 +125,9 @@ $this->breadcrumbs=array(
 <?php 
 Yii::app()->clientscript->registerCss('registration', 
         '
-            #registration-form label{
-            font-size: 8pt;
-            line-height: 10px;
+            #registration-form * {
+            font-size: 20px;
+            line-height: 18px;
             }
         ');
 ?>

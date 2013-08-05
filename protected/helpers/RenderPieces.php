@@ -11,10 +11,10 @@
  * @author zebra
  */
 class RenderPieces {
-  public static function createImg($filename, $big = false, $alt = false, $htmlOptions = null) 
+  public static function createImg($filename = false, $big = false, $alt = false, $htmlOptions = null) 
   {
     $middlePath = ($big) ? '/image/' : '/image/thumbs_middle/';    
-    return CHtml::image( ((isset($filename)) ? $middlePath . $filename : '/images/nofoto.png'), $alt, $htmlOptions);
+    return CHtml::image( ( ($filename) ? $middlePath . $filename : '/images/nofoto.png'), $alt, $htmlOptions);
   }
 }
 

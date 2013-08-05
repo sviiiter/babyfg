@@ -52,12 +52,7 @@
             <div class="sidebar_left">
               <div class="sl_menu"><?php $this->widget('application.modules.content.widgets.Menu', array('category' => $this->category));?></div>				
               <div class="banners">
-                <img src="img/left1.jpg" />
-                <img src="img/left2.jpg" />
-                <img src="img/left1.jpg" />
-                <img src="img/left2.jpg" />
-                <img src="img/left1.jpg" />
-                <img src="img/left2.jpg" />					
+                <?php $this->widget('leftBanners'); ?>
               </div>
             </div>
             <!--Content right-->
@@ -83,26 +78,17 @@
     <!--Footer-->
 	<div id="footer">
 		<div class="lenta">
-			<ul class="navigate">
-				<li>
-					<a href="#2">ГЛАВНАЯ</a>
-				</li>
-				<li>
-					<a href="#2">НОВОСТИ</a>
-				</li>	
-				<li>
-					<a href="#2">КАТАЛОГ</a>
-				</li>
-				<li>
-					<a href="#2">РАЗМЕРЫ</a>
-				</li>
-				<li>
-					<a href="#2">ОПЛАТА И ДОСТАВКА</a>
-				</li>
-				<li>
-					<a href="#2">КОНТАКТЫ</a>
-				</li>					
-			</ul>
+      <?php $this->widget('zii.widgets.CMenu',array(
+        'htmlOptions' => array('class' => 'navigate'),
+        'items'=>array(
+          array('label'=>'ГЛАВНАЯ', 'url'=>array('/site/index') , 'itemOptions' => array('id'=>'m1')),
+          array('label'=>'НОВОСТИ', 'url'=>array('/static/static/news'), 'itemOptions' => array('id'=>'m2')),
+          array('label'=>'КАТАЛОГ', 'url'=>array('/content/store/listbymenu'),'itemOptions' => array('id'=>'m3')),
+          array('label'=>'РАЗМЕРЫ', 'url'=>array('/static/static/measurement'),'itemOptions' => array('id'=>'m4')),
+          array('label'=>'ОПЛАТА И ДОСТАВКА', 'url'=>array('/static/static/payment'),'itemOptions' => array('id'=>'m4')),
+          array('label'=>'КОНТАКТЫ', 'url'=>array('/static/static/contacts'),'itemOptions' => array('id'=>'m4')),
+        ),
+      )); ?>
 		</div>		
         <!--List
         <div class="list">
@@ -130,19 +116,22 @@
           <div class="links clear">
             <div class="right clear">
               <!--a href="#" class="enter"><span class="point-left">Войти</span> <span class="point">.</span> <span class="point-right">Регистрация</span></a-->
-              <?php echo CHtml::link('Личный кабинет', array('/user/admin'), array('class' => 'enter')); ?>
+              <?php echo CHtml::link('Личный кабинет', array('/user/profile'), array('class' => 'enter')); ?> 
+              <?php if (!Yii::app()->user->isGuest): ?>
+              Вы зашли как:&nbsp;<?php echo Yii::app()->user->name; ?>&nbsp;<?php echo CHtml::link('Выйти', '/logout'); ?>
+              <?php endif; ?>
               <!--a href="#" class="enter">Личный кабинет</a-->
-              <div class="link"><a id="cart" href="/store/cart"><div class="quan"><?php echo sizeof(Yii::app()->session['id']);?></div></a></div>
+              <div class="link"><a id="cart" href="/store/cart"><div class="quan">&nbsp;<?php echo sizeof(Yii::app()->session['id']);?></div></a></div>
             </div>
           </div>
           <div class="lenta">
             <?php $this->widget('zii.widgets.CMenu',array(
               'htmlOptions' => array('class' => 'navigate'),
               'items'=>array(
-                array('label'=>'ГЛАВНАЯ', 'url'=>array('/site/index'),'itemOptions' => array('id'=>'m1')),
-                array('label'=>'НОВОСТИ', 'url'=>array('/news'), 'itemOptions' => array('id'=>'m2')),
-                array('label'=>'КАТАЛОГ', 'url'=>array('/store'),'itemOptions' => array('id'=>'m3')),
-                array('label'=>'РАЗМЕРЫ', 'url'=>array('/static/static/razmeri'),'itemOptions' => array('id'=>'m4')),
+                array('label'=>'ГЛАВНАЯ', 'url'=>array('/site/index') , 'itemOptions' => array('id'=>'m1')),
+                array('label'=>'НОВОСТИ', 'url'=>array('/static/static/news'), 'itemOptions' => array('id'=>'m2')),
+                array('label'=>'КАТАЛОГ', 'url'=>array('/content/store/listbymenu'),'itemOptions' => array('id'=>'m3')),
+                array('label'=>'РАЗМЕРЫ', 'url'=>array('/static/static/measurement'),'itemOptions' => array('id'=>'m4')),
                 array('label'=>'ОПЛАТА И ДОСТАВКА', 'url'=>array('/static/static/payment'),'itemOptions' => array('id'=>'m4')),
                 array('label'=>'КОНТАКТЫ', 'url'=>array('/static/static/contacts'),'itemOptions' => array('id'=>'m4')),
               ),
@@ -150,32 +139,5 @@
           </div>		  
         </div>
     </div>
-	<script>
-	jQuery(document).ready(function() {
-		  $('#slider1').bxSlider({
-			  mode: 'horizontal',
-			  controls: false,
-			  auto: true,
-			  autoControls: false,
-			  pause: 7000
-			});	
-		  $('#slider2').bxSlider({
-			  mode: 'horizontal',
-			  minSlides: 3,
-			  maxSlides: 3,
-			  slideWidth: 150,
-			  slideMargin: 20,
-			  moveSlides: 1,
-			  auto: true,
-			  autoControls: false,
-			  pause: 7000			  
-			  /*nextText: '&nbsp',
-			  prevText: '&nbsp',
-			  nextSelector: '#tops-slider-next',
-			  prevSelector: '#tops-slider-prev',	*/		  
-			  //prevSelector: 'hui'
-			});		
-	});
-	</script>
 </body>
 </html>

@@ -11,7 +11,7 @@ else :
 
 <?php echo CHtml::beginForm('', 'post',array('enctype'=>'multipart/form-data')); ?>
 <br/>
-<span style="color:yellow"><?php echo '* '.Yii::app()->user->getFlash('set W H');?></span>
+<span class="alert-info"><?php echo '* '.Yii::app()->user->getFlash('set W H');?></span>
 <br/>
 <br/>
 <div>    

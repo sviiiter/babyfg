@@ -13,11 +13,11 @@ class StaticController extends Controller
 	{
 		return array(
 			array('allow', 
-				'actions' => array('contacts','feedback','news','payment','article'),
+				'actions' => array('contacts','feedback','news','payment','article', 'measurement'),
 				'users'=>array('*'),
 			),            
 			array('allow', 
-				'actions'=>array('editcontacts','allfeedback','deletefeed','addnews','editpayment','editnews','props','editarticles','editmainarticle'),
+				'actions'=>array('EditMeasurement', 'editcontacts','allfeedback','deletefeed','addnews','editpayment','editnews','props','editarticles','editmainarticle'),
 				'users'=>Yii::app()->getModule('user')->getAdmins(),
 			),
 			array('deny',  
@@ -116,7 +116,44 @@ class StaticController extends Controller
         else
             throw new CHttpException(404,'The requested page does not exist.');
     }
-        
+    
+    public function actionEditMeasurement() 
+    {
+        if (Yii::app()->user->isGuest) {
+          throw new CHttpException(404,'The requested page does not exist.');
+        }      
+      
+        $this->breadcrumbs=array(
+                'Контакты'=>'/static/static/contacts',
+                'Редактировать размеры' 
+        );
+        $this->pageTitle = '"'.Yii::app()->name.'" - Размеры';
+
+        if(!Yii::app()->getModule('user')->isAdmin()){
+            throw new CHttpException(404,'The requested page does not exist.');
+        }
+
+        $company = new Company;
+        $model = $company->findByPk(1);
+            if(isset($_POST['Company'])){
+                $model->attributes = $_POST['Company'];
+                    if($model->validate()){
+                        $model->isNewRecord ? $model->save() : $model->update(); 
+                        Yii::app()->user->setFlash('Measure saved', 'Размеры сохранен.');
+                    }
+            }
+        $this->render('editmeasurement', array('model' => $model));                   
+    }    
+    
+        public function actionMeasurement()
+        {
+            $this->pageTitle = '"'.Yii::app()->name.'" - Размеры';
+            $company = new Company;
+            $model = $company->findByPk(1);
+            $this->render('measurement', array('model' => $model));
+        }    
+    
+    
         public function actionContacts()
         {
             $this->pageTitle = '"'.Yii::app()->name.'" - Контакты';
