@@ -24,7 +24,7 @@
 	width:49%;
 	float:left;
 	position:static;
-	margin-left:0px;
+	margin-left:50%;
 }
 .price{
   position: static;
@@ -41,4 +41,4 @@
 }
 
 #content .center .in p {margin:0 auto 10px 0px}
-.tovar-name{min-height: 62px;}
+.tovar-name{min-height: 36px;}

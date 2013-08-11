@@ -101,7 +101,7 @@
         <div class="copyright">
             <div class="in">BABY FASHION GALLERY, 2013</div>
         </div>
-		<div class="development clear">Разработка сайта <a href="#">freakmark</a></div>
+		<div class="development clear">Разработка сайта <a href="mailto:Николай%20Сергеев%20&lt;freakmarkt@gmail.com&gt;">freakmark</a></div>
     </div>
     <!--Header-->
     <div id="header">
@@ -109,16 +109,17 @@
         <div class="wrap clear">
           <!--Logo-->
           <div class="phones">
-            <p><span>+7</span> 495 777 33 22</p><br/>
-            <p><span>+7</span> 926 444 55 33</p>
+            <p><span>+7</span> 495 761 76 98</p><br/>
+            <p><span>+7</span> 985 761 76 98</p>
           </div>
           <!--Links-->
           <div class="links clear">
             <div class="right clear">
               <!--a href="#" class="enter"><span class="point-left">Войти</span> <span class="point">.</span> <span class="point-right">Регистрация</span></a-->
-              <?php echo CHtml::link('Личный кабинет', array('/user/profile'), array('class' => 'enter')); ?> 
+              <?php echo CHtml::link('Личный кабинет', array('/user/profile'), array('class' => 'enter')); ?>
               <?php if (!Yii::app()->user->isGuest): ?>
-              Вы зашли как:&nbsp;<?php echo Yii::app()->user->name; ?>&nbsp;<?php echo CHtml::link('Выйти', '/logout'); ?>
+              Вы зашли как:&nbsp;<?php echo Yii::app()->user->name; ?>&nbsp;<p>Статус: <?php echo Yii::app()->user->rolename[Yii::app()->user->role]; ?></p>
+              <?php echo CHtml::link('Выйти', '/logout'); ?>
               <?php endif; ?>
               <!--a href="#" class="enter">Личный кабинет</a-->
               <div class="link"><a id="cart" href="/store/cart"><div class="quan">&nbsp;<?php echo sizeof(Yii::app()->session['id']);?></div></a></div>

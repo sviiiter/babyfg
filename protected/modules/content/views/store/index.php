@@ -13,15 +13,13 @@ $this->breadcrumbs=array(
   <?php foreach ($model as $value) : ?>
   <a href="<?=$this->createUrl('/store/' . $value->id);?>" itemtype="http://schema.org/Product">
     <div class="item border-radiused">	
-      <div class="tovar-pic"><?=CHtml::image((isset($value->pictures[0]->picname)) ? '/image/thumbs_middle/' . $value->pictures[0]->picname : $picture = '/images/nofoto.png'); ?></div>      
+      <div class="tovar-pic"><?=CHtml::image( ( isset($value->pictures[0]->picname)) ? '/image/thumbs_middle/' . $value->pictures[0]->picname : '/image/pattern/nofoto.png', null, array('style' => 'display:block;margin:0 auto;')); ?></div>      
       <div class="tovar-name"><p><span class="cap-img-item"><?php echo $value->name; ?></span></p></div>
       <!--div class="simple-desc"-->
         <!--?=(mb_strlen($value->description, "utf-8") > 22) ? (mb_substr($value->description, 0, 22, "utf-8") . '...') : $value->description;?-->
-      <!--/div-->									
-      <div class="row">
-        <div class="price span1"><?=intval($value->price);?> р</div>
-        <img class="buy-button span2" src="/css/but-kupit.jpg" alt="" />
-      </div>
+      <!--/div-->			
+      <div class="price"><?=$value->blockprice;?></div>      
+      <img class="buy-button span2" src="/css/but-kupit.jpg" alt="" />
     </div>
   </a>
   <!--?=( Yii::app()->getModule('user')->isAdmin()) ? CHtml::link( 'править>>',
@@ -46,3 +44,9 @@ Yii::app()->clientscript->registerCss('storeindex',
 ?>
 <?php endif; ?>
 <?php Yii::app()->clientscript->registerCssFile(Yii::app()->request->baseUrl.'/css/catalog.css', 'screen, projection'); ?>
+<?php Yii::app()->clientscript->registerCss('catalog','
+  .newprice{float:left; margin-left:10px;color:red}
+  .oldprice{float:left;text-decoration:line-through}
+  .price{width:70%; height:17%}
+');
+?>

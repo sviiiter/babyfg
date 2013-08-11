@@ -23,7 +23,7 @@
 		array(
 			'name' => 'Обложка',
 			'type'=>'raw',
-			'value' => 'CHtml::image((isset($data->tovars->cover[0]->picname)) ? \'/image/thumbs_middle/\' . $data->tovars->cover[0]->picname : \'/images/nofoto.png\');',
+			'value' => 'CHtml::image((isset($data->tovars->cover[0]->picname)) ? \'/image/thumbs_middle/\' . $data->tovars->cover[0]->picname : \'/image/pattern/nofoto.png\');',
 		),    
 		array(
 			'name' => 'Артикул',
@@ -53,7 +53,7 @@
 		array(
 			'name' => 'Цена',
 			'type'=>'raw',
-			'value' => '$data->tovars->price . \' р\'',
+			'value' => '$data->tovars->getPrice($data->order->user) . \' р\'',
 		),       
 ))); ?>
 <b>Общая сумма заказа: <?php echo $model->sumprice; ?> р</b>
@@ -132,4 +132,9 @@ Yii::app()->clientscript->registerCss('cart',
         }
         '        
         );
+?>
+<?php
+  Yii::app()->clientscript->registerCss('catalog','
+    .in{font-size:20px}
+  ');
 ?>

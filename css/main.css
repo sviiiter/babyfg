@@ -85,7 +85,7 @@ html,body{height:100%;width:100%;background:#FFAB00 url(kover.jpg) repeat top le
 	padding:5px 5px 0 5px;
 }
 .banner-maxwidth{width:900px !important}
-ul.horizontal .buy-button{margin-left: 59%;width: 87px;}
+ul.horizontal .buy-button{margin-left: 59%;width: 87px;margin-top: -23px;}
 .horizontal-root .bx-prev{
 	background:url(prev_next.png) no-repeat 0 -15px !important;
 	height: 117px !important;
@@ -203,7 +203,7 @@ display:none;
 .submenus a{
 	font-size:20px;
 }
-.tovar-pic{margin:0 auto;width: 176px;height: 50%;}
+.tovar-pic{margin:0 auto auto -8px;width: 176px;height: 50%;}
 .pagintr{height: 40px;padding: 10px;font-size: 16px;margin-left:38px}
 .pagintr a{font-size: 16px;}
 .central-width{	width:80%;margin:0 auto;max-width:900px; /*вынести для IE*/}
@@ -211,7 +211,7 @@ display:none;
 .tovar_cart{background-color:white;padding:10px;}
 li.active ul{display:block;}
 .parent ul li.active a{color:#333333; font-size: 22px}
-.preview{height:56%;}
+.preview{height:71%}
 .sidebar_right .my-right a{
   /*display: block;
   width: 145px;

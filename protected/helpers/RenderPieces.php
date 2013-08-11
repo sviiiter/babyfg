@@ -13,8 +13,8 @@
 class RenderPieces {
   public static function createImg($filename = false, $big = false, $alt = false, $htmlOptions = null) 
   {
-    $middlePath = ($big) ? '/image/' : '/image/thumbs_middle/';    
-    return CHtml::image( ( ($filename) ? $middlePath . $filename : '/images/nofoto.png'), $alt, $htmlOptions);
+    $middlePath = ($big) ? '/image/' : '/image/thumbs_middle/';
+    return CHtml::image( ( ($filename) ? $middlePath . $filename : '/image/pattern/nofoto.png'), $alt, $htmlOptions);
   }
 }
 

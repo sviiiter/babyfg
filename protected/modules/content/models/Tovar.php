@@ -141,9 +141,10 @@ class Tovar extends CActiveRecord
 		));
 	} 
   
-  public function getPrice()
-  {
-    switch (Yii::app()->user->role) {
+  public function getPrice($user = false)
+  {        
+    $role = ($user) ? $user->role : Yii::app()->user->role;
+    switch ($role) {
       case (User::FIRST):
         return $this->price2;
         break;

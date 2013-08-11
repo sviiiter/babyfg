@@ -5,6 +5,7 @@ $this->breadcrumbs=array(
 ?>
 <div class="span5 fontsize20 profile-wrap">
 <h2><?php echo UserModule::t('Your profile'); ?></h2>
+<p>Общая сумма ваших заказов: <?php echo $model->ordersusersumprice; ?>&nbsp;р</p>
 <?php echo $this->renderPartial('menu'); ?>
 
 <?php if(Yii::app()->user->hasFlash('profileMessage')): ?>

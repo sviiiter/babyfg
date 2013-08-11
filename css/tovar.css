@@ -45,3 +45,5 @@
 .buy-large{margin:25px auto auto 75px}
 select {font:inherit;color:black;font-size:20px;height:36px}
 .mypreview .bx-prev,.mypreview .bx-next{display:none !important}
+.tovar-wrap .bx-viewport{left:0 !important;}
+.tovar-wrap .bx-wrapper{margin: 0 0 5px !important}

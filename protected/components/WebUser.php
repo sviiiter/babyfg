@@ -15,6 +15,13 @@
             }
         }        
 
+        public function getRoleName() {
+            if($user = $this->getModel()){              
+                // в таблице User есть поле role
+                return $user->rolename;
+            }
+        }         
+        
         private function getModel(){
             if (!$this->isGuest && $this->_model === null){
                 $this->_model = User::model()->findByPk($this->id);

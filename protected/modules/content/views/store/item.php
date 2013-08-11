@@ -9,31 +9,31 @@
 <div class="tovar-wrap">
   <div class="row">
     <div class="mypreview">
-      <ul class="item-pic">
-        <?php foreach ($value->pictures as $pic): ?>
-          <a class="fancybox" rel="group" href="<?='/image/' . $pic->picname?>"><li><?=Sender::Imgrenderer('/image/' . $pic->picname, $subject)?></li></a>
-        <?php endforeach; ?>
-      </ul>
-      <div id = "bx-pager">
-        <?php $i = 0; foreach ($value->pictures as $pic): ?>           
-          <a data-slide-index="<?=$i; ?>" href=""><?=Sender::Imgrenderer('/image/thumbs/' . $pic->picname, $subject)?></a>
-        <?php $i++; endforeach; ?>
-      </div>               
-      <div id="empty-sel1"></div>
-      <div id="empty-sel2"></div>
+      <?php if ($value->pictures): ?>
+        <ul class="item-pic">
+          <?php foreach ($value->pictures as $pic): ?>
+            <a class="fancybox" rel="group" href="<?='/image/' . $pic->picname?>"><li><?=Sender::Imgrenderer('/image/' . $pic->picname, $subject)?></li></a>
+          <?php endforeach; ?>
+        </ul>
+        <div id = "bx-pager">
+          <?php $i = 0; foreach ($value->pictures as $pic): ?>           
+            <a data-slide-index="<?=$i; ?>" href=""><?=Sender::Imgrenderer('/image/thumbs/' . $pic->picname, $subject)?></a>
+          <?php $i++; endforeach; ?>
+        </div>               
+        <div id="empty-sel1"></div>
+        <div id="empty-sel2"></div>
+      <?php else: ?>
+        <?php echo CHtml::image( '/image/pattern/nofotobig.png', null, array('style' => 'display:block; margin:0 auto;')); ?>
+      <?php endif; ?>
     </div>
     <div class="description">
       <h1><?=$subject?></h1>
       <span class="fontsize26">
         <p>Артикул: <?=$value->artikul; ?></p>
-        <p>Производитель: <?=$value->country; ?></p>
-      </span>
-      <span class="desc">
-        <span class="fontsize26">
-          Описание
-        </span>		
+        <p>Коллекция: <?=$value->country; ?></p>
+        <p style="margin-top:0px;">Описание</p>
         <?=$value->description; ?>
-      </span>
+      </span>		        
       <?php echo CHtml::beginForm('', 'post', array('id' => 'item-params')); ?>
       <?php echo CHtml::dropDownList('first_param', null, CHtml::listData( ($value['cus1_values']) ? $value['cus1_values'] : new Customfield, 'id', 'name'),
         array('empty' => 'Выбрать ' . $value->custom1, 'class'  =>  'border-radiused-wout-sh')

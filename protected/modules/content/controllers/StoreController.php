@@ -126,7 +126,7 @@ class StoreController extends Controller
           'params'  =>  array('is_cover'  =>  '1')
         )))->forsale()->findAll($criteria);
         if (!$tovar) Yii::app()->user->setFlash('no result', 'Нет товаров.');        
-        $this->render('index', array('model'=>$tovar, 'pages' => $pages, 'user' => $user));  
+        $this->render('index', array('model' => $tovar, 'pages' => $pages, 'user' => $user));  
     }      
     
     public function actionListbybrand()

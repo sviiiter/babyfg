@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
 </div>
 <?php else: ?>
 
-<div class="span5 fontsize20">
+<div class="span8 fontsize20">
 <?php $form=$this->beginWidget('UActiveForm', array(
 	'id'=>'registration-form',
 	'enableAjaxValidation'=>true,
@@ -72,11 +72,11 @@ $this->breadcrumbs=array(
   ?>
 
   <p>    
-    <div class="well"> 
+    <div class="well" style="overflow:hidden"> 
       <h3>Дети:</h3>
-      <p class="fontsize16"><i class="icon-info-sign"></i>&nbsp;Укажите дату рождения ваших детей, если желаете.</p>
+      <p class="fontsize16"><i class="icon-info-sign"></i>&nbsp;Укажите дату рождения ваших детей.</p>
       <?php for ($i = 0; $i < 3; $i++): ?>   
-        <div class="alert alert-success">
+        <div class="alert alert-success kids-wrapper" style="width:180px;margin-left:10px;float:left">
         <p><?php echo $i; ?>.</p>
         <?php echo CHtml::activeLabel($kids, 'birth'); ?>
         <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
@@ -88,15 +88,19 @@ $this->breadcrumbs=array(
               'dateFormat'=>'yy-mm-dd',
               ),
           'htmlOptions'=>array(
-              'style'=>'height:20px;'
+              'style'=>'height:15px;width:187px'
           ),
           'language' => 'ru',
           'cssFile'=>false,
         )); ?>
         <?php echo CHtml::activeLabel($kids, 'sex'); ?>
-        <?php echo CHtml::radioButtonList( 'UserKids[sex][' . $i . ']', '0', array(UserKids::checkSex(UserKids::MALE), UserKids::checkSex(UserKids::LADY))); ?>
+        <?php echo CHtml::radioButtonList( 'UserKids[sex][' . $i . ']', '0', array(UserKids::checkSex(UserKids::MALE), UserKids::checkSex(UserKids::LADY)), array(
+          'template'  =>  '<div style="float:left;width:100px;height:80px;">{label}{input}</div>',
+          'separator' => '',
+          'container' =>  'div class="labels_sex" style="height:82px;width:224px"'
+        )); ?>
         <?php echo CHtml::activeLabel($kids, 'name'); ?>
-        <?php echo CHtml::textField('UserKids[name][' . $i . ']', null, array('placeholder' => UserKids::model()->getAttributeLabel('name'))); ?>
+        <?php echo CHtml::textField('UserKids[name][' . $i . ']', null, array('placeholder' => UserKids::model()->getAttributeLabel('name'), 'style' => 'width:187px;height:15px')); ?>
         </div>
       <?php endfor; ?>
     </div>   
@@ -129,6 +133,7 @@ Yii::app()->clientscript->registerCss('registration',
             font-size: 20px;
             line-height: 18px;
             }
+            .kids-wrapper input{}
         ');
 ?>
 <!--/noindex-->

@@ -161,9 +161,19 @@ class User extends CActiveRecord
   {
     return array(
       'admin' =>  'Администратор',
-      'super' => 'Суперпользователь',
-      'second'  =>  'Привелегированный',
-      'first' =>  'Зарегестрированный'
+      'super' => 'Привелегированный',
+      'second'  =>  'VIP клиент',
+      'first' =>  'Постоянный клиент'
     );
   }  
+  
+  public function getOrdersUserSumPrice()
+  {
+    $sumprice = 0;
+    foreach ($this->orders as $order) {
+      $sumprice += $order->sumprice;
+    }
+    return $sumprice;
+  }
+  
 }

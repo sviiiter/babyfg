@@ -1,7 +1,7 @@
 <?php if ($tovar): ?>
   <?php foreach ($tovar as $value): ?>
     <li>
-      <a href="/store/<?php echo $value->id; ?>"><?=CHtml::image((isset($value->pictures[0]->picname)) ? '/image/thumbs_middle/' . $value->pictures[0]->picname : '/images/nofoto.png', '', array('class' => 'border-radiused')); ?></a>
+      <a href="/store/<?php echo $value->id; ?>"><?=CHtml::image((isset($value->pictures[0]->picname)) ? '/image/thumbs_middle/' . $value->pictures[0]->picname : '/image/pattern/nofoto.png', '', array('class' => 'border-radiused')); ?></a>
     </li>
   <?php endforeach; ?>   
 <?php endif; 

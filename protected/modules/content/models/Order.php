@@ -50,7 +50,8 @@ class Order extends CActiveRecord
 	public function relations()
 	{
 		$relations = array(
-                        'orderitems'=>array(self::HAS_MANY, 'Orderitems', 'order_id'),                        
+      'orderitems'  =>  array(self::HAS_MANY, 'Orderitems', 'order_id'),
+      'user'  =>  array(self::BELONGS_TO, 'User', 'user_id')    
 		);
 		if (isset(Yii::app()->getModule('user')->relations)) $relations = array_merge($relations,Yii::app()->getModule('user')->relations);
 		return $relations;
@@ -98,7 +99,7 @@ class Order extends CActiveRecord
   {
     $sumprice = 0;
     foreach ($this->orderitems as $item) {
-      $sumprice += $item->tovars->price * $item->quantity;
+      $sumprice += $item->tovars->getPrice($this->user) * $item->quantity;
     }
     return $sumprice;
   }          

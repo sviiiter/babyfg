@@ -140,7 +140,7 @@ class SomeIterations
           $excel->getActiveSheet()->setCellValue('D'. $i, $data->tovars->custom1 . ': ' . ( (isset($data->customfield1)) ? $data->customfield1->name : ""))->getStyle('D'. $i)->applyFromArray($styleArray);
           $excel->getActiveSheet()->setCellValue('E'. $i, $data->tovars->custom2 . ': ' . ((isset($data->customfield2)) ? $data->customfield2->name : ""))->getStyle('E'. $i)->applyFromArray($styleArray);
           $excel->getActiveSheet()->setCellValue('F'. $i, $data->quantity)->getStyle('F'. $i)->applyFromArray($styleArray);    
-          $excel->getActiveSheet()->setCellValue('G'. $i, $data->tovars->price . ' р')->getStyle('G'. $i)->applyFromArray($styleArray); 
+          $excel->getActiveSheet()->setCellValue('G'. $i, $data->tovars->getPrice($model->user) . ' р')->getStyle('G'. $i)->applyFromArray($styleArray); 
           if ($count-- == 1) {
             $excel->getActiveSheet()->setCellValue( 'F'. ($i + 1), 'Общая сумма заказа')->getStyle( 'F'. ($i + 1))->applyFromArray($styleArray);    
             $excel->getActiveSheet()->setCellValue( 'G'. ($i + 1), $model->sumprice . ' р')->getStyle( 'G'. ($i + 1))->applyFromArray($styleArray);             

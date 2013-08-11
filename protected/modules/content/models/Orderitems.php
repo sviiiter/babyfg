@@ -34,6 +34,7 @@ class Orderitems extends CActiveRecord
       'tovars' => array(self::BELONGS_TO, 'Tovar', array('tovar_id'=>'id')),
       'customfield1' => array(self::BELONGS_TO, 'Customfield', 'custom1'),
       'customfield2' => array(self::BELONGS_TO, 'Customfield', 'custom2'),
+      'order' => array(self::BELONGS_TO, 'Order', 'order_id'),
 		);
 		if (isset(Yii::app()->getModule('user')->relations)) $relations = array_merge($relations,Yii::app()->getModule('user')->relations);
 		return $relations;

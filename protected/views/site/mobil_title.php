@@ -12,7 +12,7 @@
     <?php          
         $picture = '/baners/thumbs/'.$item->pic_name;               
         if(strlen($item->pic_name)<=0 || !file_exists(Yii::getPathOfAlias('webroot').$picture))
-            $picture = '/images/nofoto.png';       
+            $picture = '/image/pattern/nofoto.png';       
     ?>  
     
     <a href="/store/<?=$item->id?>" itemprop="url" style="text-decoration:none; color: black"><img itemprop="contentURL" height="60px" width="50px" src="<?=$picture;?>" /><p><?=$item->price?> р</p></a>

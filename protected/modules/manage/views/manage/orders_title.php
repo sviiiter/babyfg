@@ -2,7 +2,9 @@
 <p><?php 
   $params = array('/manage/manage/downloadorders');
   ( isset($_GET['all'])) ? ($params['all'] = 'all') : ($params['id'] = ( isset($_GET['id'])) ? $_GET['id'] : Yii::app()->user->id);
-  echo CHtml::link( 'Зкспортировать в Excel', $params); 
+  if (Yii::app()->user->role == User::ADMIN) {
+    echo CHtml::link( 'Зкспортировать в Excel', $params); 
+  }
 ?></p>
 <?php if (Yii::app()->user->hasFlash('no orders')): ?>
   <br/><div class="alert alert-block span5"><?=Yii::app()->user->getFlash('no orders');?></div>
@@ -61,3 +63,8 @@ endforeach;
 </div>
 
 <?php endif;?>
+<?php
+  Yii::app()->clientscript->registerCss('catalog','
+    .in{font-size:20px}
+  ');
+?>
