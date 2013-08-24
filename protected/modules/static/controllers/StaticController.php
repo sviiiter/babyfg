@@ -211,6 +211,7 @@ class StaticController extends Controller
         $model = new News;
         if (isset($_POST['News'])) {
           $model->attributes = $_POST['News'];
+          $model->scenario = 'create';
           if ($model->validate()) {
             $model->isNewRecord ? $model->save() : $model->update(); 
             Yii::app()->user->setFlash('news saved', 'Новость сохранена.');
@@ -233,9 +234,7 @@ class StaticController extends Controller
            else
            {
                 $criteria = new CDbCriteria;
-                $criteria->params = array(
-                    'order'=>'date DESC',
-                );
+                $criteria->order = 'date DESC';
                 $pages=new CPagination(News::model()->count($criteria));
                 $pages->pageSize = 10;
                 $pages->applyLimit($criteria);

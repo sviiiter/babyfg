@@ -24,9 +24,9 @@
 			  slideWidth: 150,
 			  slideMargin: 0,
 			  moveSlides: 1,
-			  //auto: true,
+			  auto: true,
 			  autoControls: false,
-			  //pause: 7000        
+			  pause: 7000        
 			});	      
   '); 
   Yii::app()->clientscript->registerCss('catalog','

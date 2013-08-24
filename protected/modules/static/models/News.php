@@ -1,15 +1,12 @@
 <?php
 class News extends CActiveRecord
 {    
-        public function beforeSave() {
-            if(parent::beforeSave())
-            {
-                $this->date = date("Y-m-d H:i:s");
-                return true;
-            }
-            else
-                return false;
-        }
+  public function beforeSave() {
+      if ( parent::beforeSave() && ($this->scenario === 'create')) {
+          $this->date = date("Y-m-d H:i:s");
+      }      
+      return true;
+  }
         
 	public static function model($className=__CLASS__)
 	{

@@ -65,7 +65,7 @@ class Sender
     {
         require_once dirname(__FILE__).'../../sms/sms24x7.php';                
         $response = true;
-        //$response = smsapi_push_msg_nologin('gorillamen@mail.ru', 'RqKh6yw', $phone, $message, array("sender_name"=>$sender));
+        $response = smsapi_push_msg_nologin('1905elena@rambler.ru', 'V8Qmvk4', $phone, $message, array('sender_name'  =>  $sender));
         return $response;
     }
     

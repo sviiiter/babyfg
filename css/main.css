@@ -9,7 +9,7 @@ html,body{height:100%;width:100%;background:#FFAB00 url(kover.jpg) repeat top le
 .w{height:100%;width:1000px; margin:0 auto;}
 #header{position:absolute;top:0;left:0;width:100%;height:287px;}
 #header .wrap{height:287px;min-width:1000px;margin: 0 auto;background:url(logo.png) no-repeat center 0px;color:#2E2E2E}
-#header .wrap .phones{float:left;width:26%;font-size:40px;margin:20px;}
+#header .wrap .phones{float:left;width:30%;font-size:40px;margin:20px;}
 #header .wrap .phones span{font-size:30px}
 .phones p{font-weight:bold;letter-spacing: 0.01em;margin-left: 17px;}
 #header .wrap .links{margin-left:26%}
@@ -203,7 +203,7 @@ display:none;
 .submenus a{
 	font-size:20px;
 }
-.tovar-pic{margin:0 auto auto -8px;width: 176px;height: 50%;}
+.tovar-pic{margin:0 auto;width: 176px;height: 50%;}
 .pagintr{height: 40px;padding: 10px;font-size: 16px;margin-left:38px}
 .pagintr a{font-size: 16px;}
 .central-width{	width:80%;margin:0 auto;max-width:900px; /*вынести для IE*/}

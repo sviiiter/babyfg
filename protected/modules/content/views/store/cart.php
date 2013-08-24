@@ -14,19 +14,24 @@
       <div class="span5">
         <div class="textd">
           <p>Наименование : <?=$item->name;?></p>
-          <p>Цена : <?=$item->price;?></p>                
+          <p>Цена : <?=$item->price;?> р</p>                
         </div>
         <?php foreach ($items[$item->id] as $p_k => $properties): ?>
           <b><?php echo ($properties['param1']) ? $item->custom1 . ':' . $item->customfield1[ $properties['param1']]->name : ''; ?></b>
           <b><?php echo ($properties['param2']) ? $item->custom2 . ':' . $item->customfield2[ $properties['param2']]->name : ''; ?></b>
           <p>Количество: <?php echo CHtml::textField('quantity', $properties['quantity'], array(
             'class' => 'input-mini',
-            'onchange' =>  '
-              $q = $(this).val();
-              js: $.get(\'/store/saveitem\',{item: \'' . $item->id . '\', subitem: \'' . $p_k . '\', quantity: $q,  },function(data){
-                var data = JSON.parse(data);
-                $(\'#notificate\').html(data.message).show(700).hide(700);
-              });                
+            'onchange' =>  'js:
+              var q = this.value;
+              if (q > 0) {
+                $.get(\'/store/saveitem\',{item: \'' . $item->id . '\', subitem: \'' . $p_k . '\', quantity: q,  },function(data){
+                  var data = JSON.parse(data);
+                  $(\'#notificate\').html(data.message).show(700).hide(700);
+                  $(\'#sumprice\').find(\'span\').html(data.sumprice + \' р\');
+                });
+              } else  {
+                alert("Укажите количество");
+              }
             '  
           )) ?>
           <!--?php echo CHtml::button('Сохранить', array('id' => 'b' . $item->id, 'class'=>'btn btn-small btn-inverse')); ?-->     

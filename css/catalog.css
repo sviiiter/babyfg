@@ -25,6 +25,7 @@
 	float:left;
 	position:static;
 	margin-left:50%;
+  margin-top:10px;
 }
 .price{
   position: static;
@@ -41,4 +42,4 @@
 }
 
 #content .center .in p {margin:0 auto 10px 0px}
-.tovar-name{min-height: 36px;}
+.tovar-name{min-height: 63px;margin-top:10px;}

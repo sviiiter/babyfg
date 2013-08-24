@@ -77,7 +77,7 @@ $this->breadcrumbs=array(
       <p class="fontsize16"><i class="icon-info-sign"></i>&nbsp;Укажите дату рождения ваших детей.</p>
       <?php for ($i = 0; $i < 3; $i++): ?>   
         <div class="alert alert-success kids-wrapper" style="width:180px;margin-left:10px;float:left">
-        <p><?php echo $i; ?>.</p>
+        <p><?php echo $i + 1; ?>.</p>
         <?php echo CHtml::activeLabel($kids, 'birth'); ?>
         <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
           'name'  =>  'UserKids[birth][' . $i . ']',

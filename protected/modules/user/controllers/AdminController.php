@@ -43,7 +43,8 @@ class AdminController extends Controller
 				'pageSize'=>Yii::app()->controller->module->user_page_size,
 			),
       'criteria'  =>  new CDbCriteria( array(
-        'with'  =>  'kids'
+        'with'  =>  'kids',
+        'order' =>  'id DESC'
     ))));
 
 		$this->render('index',array(

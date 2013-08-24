@@ -15,14 +15,23 @@ else :
 <br/>
 <br/>
 <div>    
-<?php echo CHtml::errorSummary($model,'<div class="alert alert-error span4">','</div>'); ?>
-<br/>
+  <p>
+    <?php echo CHtml::errorSummary($model,'<div class="alert alert-error span4">','</div>'); ?>
+  </p>
+  <br/><br/><br/>
   <?php echo CHtml::activeLabel($model,'image'); ?>
-  <?php echo CHtml::activeFileField($model,'image',array('size'=>60,'maxlength'=>128)); ?>        
+  <?php echo CHtml::activeFileField($model,'image',array('size'=>60,'maxlength'=>128)); ?>  
+  <?php if ($model->image) { echo CHtml::image('/image/leftcolumn/' . $model->image); } ?>
+  <p>
+    <?php echo CHtml::activeLabel($model,'url'); ?>
+    <?php echo CHtml::activeTextField($model,'url'); ?>       
+  </p>
 </div> 
 
 <div> <!--class="row buttons"-->
         <?php echo CHtml::submitButton('Загрузить', array('class' => 'btn btn-inverse')); ?>
 </div>
 <?php echo CHtml::endForm();  ?>
+<br/>
+<?php if ($model->id) { echo CHtml::link( 'Удалить>>', array('/static/proposals/leftprop', 'id' =>  $model->id, 'delete'  =>  'true'), array('class'  =>  'btn btn-danger')); } ?>
 <?php endif;?>

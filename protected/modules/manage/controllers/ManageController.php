@@ -47,6 +47,35 @@ class ManageController extends Controller
 
   public function actionEditItem($id = false)
   {
+    if ( isset($_GET['copyTo']) && Yii::app()->request->isAjaxRequest) {
+      $tovar = Tovar::model()->with('customfields')->findByPk($id);
+      $newTovar = new Tovar;
+      $newTovar->attributes = $tovar->attributes;
+      $newTovar->menu_id_item = $_GET['copyTo'];
+      $newTovar->save();      
+      foreach ($tovar->customfields as $customfield) {
+        $custom_field = new Customfield;
+        $custom_field->attributes = $customfield->attributes;
+        $custom_field->tovar_id = $newTovar->id;
+        $custom_field->save();
+      }
+      $tovarPics = TovarPics::model()->findAll( 'tovar_id = :tovar_id', array(':tovar_id' => $id));
+      foreach ($tovarPics as $pic) {
+        $splitted = explode('.', $pic->picname);
+        $newpicname = $splitted[0] . $newTovar->id . '.' . $splitted[1];
+        copy(Yii::getPathOfAlias('webroot'). '/image/' . $pic->picname, Yii::getPathOfAlias('webroot'). '/image/' . $newpicname);
+        copy(Yii::getPathOfAlias('webroot'). '/image/thumbs_middle/' . $pic->picname, Yii::getPathOfAlias('webroot'). '/image/thumbs_middle/' . $newpicname);
+        copy(Yii::getPathOfAlias('webroot'). '/image/thumbs/' . $pic->picname, Yii::getPathOfAlias('webroot'). '/image/thumbs/' . $newpicname);        
+        $newPic = new TovarPics;
+        $changed = $pic->attributes;
+        unset($changed['id']);
+        $newPic->attributes = $changed;
+        $newPic->picname = $newpicname; 
+        $newPic->tovar_id = $newTovar->id;
+        $newPic->save();
+      }      
+      Yii::app()->end();  
+    }
     $this->pageTitle = '"'.Yii::app()->name.'" - Редактировать товар';
     $tovar = new Tovar;
     $pictures = new TovarPics;

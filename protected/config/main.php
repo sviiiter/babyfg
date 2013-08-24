@@ -118,6 +118,7 @@ array(
         '<controller:store>/<action:[^\d]\w+>' => '/content/<controller>/<action>/',
         '<controller:store>/<action:[^\d]\w+>/menu/<id:\d+>' => '/content/<controller>/<action>/menu/<id>',
         '<controller:store>/<action:[^\d]\w+>/id/<id:\d+>' => '/content/<controller>/<action>/id/<id>',
+        '<controller:store>/<action:[^\d]\w+>/item/<item:\d+>/subitem/<subitem:.+>' => '/content/<controller>/<action>/item/<item>/subitem/<subitem>',
         '<controller:store>/<action:[^\d]\w+>/menu/<id:\d+>/field/<field:.+>' => '/content/<controller>/<action>/menu/<id>',
         '<controller:store>/<id:\d+>' => '/content/<controller>/item/id/<id>',
         '<action:feedback|contacts|payment|news|measurement>' => 'static/static/<action>',

@@ -1,24 +1,17 @@
 <h1>Новости</h1>
 <div class="span6">
-<?php foreach ($model as $value) : ?>
+<?php $i = 0;foreach ($model as $value) : ?>
 <p>
-<?php 
-$date = explode(' ', $value->date);
-$newdmy = array_reverse(explode('-', $date[0]));
-echo implode('.', $newdmy);
-unset($date, $newdmy);
-?>
-<br/>
-<div>
-    <?php
-    echo CHtml::link(substr($value->text, 0 , 120).'...', '/news/' . $value->id, array('style' => 'color: gray','itemprop' => 'url'));
-    ?>
+<div style="word-wrap:break-word;">
+    <h3><?php echo Yii::app()->dateFormatter->formatDateTime($value->date, 'short', null); ?></h3>
+	  <?php echo CHtml::link($value->text, '/news/' . $value->id, array('style' => 'color:gray;font-size: 20px;','itemprop' => 'url')); ?>
 </div>
 <br/>
 </p>
 
 <?php endforeach; ?>
 <div class="pagintr">
-<?php $this->widget('CLinkPager', array( 'pages'=>$pages));?>
+<?php //$this->widget('CLinkPager', array( 'pages'=>$pages));
+?>
 </div>
 </div>

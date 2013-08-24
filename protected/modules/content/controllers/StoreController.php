@@ -16,7 +16,7 @@ class StoreController extends Controller
     {                
         if(!$id)
            throw new CHttpException('404', 'Страница не найдена');
-        
+
         // кэшируем
         $item = (Yii::app()->cache->get('item')) ? Yii::app()->cache->get('item') : array();
         if (!(sizeof($item) < 16)) {
@@ -182,6 +182,16 @@ class StoreController extends Controller
     {
       if ( !isset($_GET['id']) || !Yii::app()->request->isAjaxRequest)
         throw new CHttpException(403, 'Доступ запрещен');
+      $tovar = Tovar::model()->findByPk( Yii::app()->request->getParam('id'));
+      if ( (isset($_GET['first_param']) && (strlen($_GET['first_param']) == 0))
+            || (isset($_GET['second_param']) && (strlen($_GET['second_param']) == 0))
+            || (isset($_GET['quantity']) && (strlen($_GET['quantity']) == 0))) 
+      {
+        $response = array(
+          'code'  => 1,
+          'message' =>  'необходимо заполнить поля ' . $tovar->custom1 . ', ' . $tovar->custom2 . ', количество'
+        );
+      } else {        
         $cart = Yii::app()->session['id'];
         $arTemp = array(
           'id' => $_GET['id'],
@@ -191,14 +201,23 @@ class StoreController extends Controller
         );
         $cart[ $_GET['id'] ][ $_GET['first_param'] . '_' . $_GET['second_param'] ] = $arTemp;
         Yii::app()->session['id'] = $cart;    
-        echo '{ "session_count": ' . sizeof(Yii::app()->session['id']) . ', "myimg" : "<img src=\'/css/incart.png\' />" }';           
+        $response = array(
+          'code' => 0,
+          'session_count' =>  sizeof(Yii::app()->session['id']),
+          'myimg' =>  '<img src="/css/incart.png" />'
+        );
+        
+        //echo '{ "session_count": ' . sizeof(Yii::app()->session['id']) . ', "myimg" : "<img src=\'/css/incart.png\' />" }';           
+      }
+      echo CJSON::encode($response);
     }
     
     public function actionCart()  //Переделать на правильные условия!!!
     {
       $items = null;
       $pages = null;
-      $sumprice = null;        
+      $sumprice = null; 
+      $tovars = null;
       $this->pageTitle = '"'.Yii::app()->name.'" - Корзина';        
         if ( isset(Yii::app()->session['id']) && Yii::app()->session['id'] ) {
           $items = Yii::app()->session['id'];
@@ -231,15 +250,18 @@ class StoreController extends Controller
     {
       if ( !isset($_GET['item']) || !isset($_GET['subitem']) || !isset($_GET['quantity']) )
         throw new CHttpException(403, 'Доступ запрещен');
-       $item = $_GET['item'];
-       $subitem = $_GET['subitem'];
-       $quantity = $_GET['quantity'];
-       $items = Yii::app()->session['id'];
-       $current = $items[$item][$subitem];
-       $current['quantity'] = $_GET['quantity'];
-       $items[$item][$subitem] = $current;
-       Yii::app()->session['id'] = $items;
-       echo '{"message": "Изменения сохранены"}';
+      $item = $_GET['item'];
+      $subitem = $_GET['subitem'];
+      $quantity = ( (int)$_GET['quantity'] > 0) ? (int)$_GET['quantity'] : 1;
+      $items = Yii::app()->session['id'];
+      $current = $items[$item][$subitem];
+      $current['quantity'] = ( (int)$_GET['quantity'] > 0) ? (int)$_GET['quantity'] : 1;
+      $items[$item][$subitem] = $current;
+      Yii::app()->session['id'] = $items;
+      echo CJSON::encode(array(
+        'message' => 'Изменения сохранены',
+        'sumprice'  =>  ContentModule::sumprice()
+      ));
     } 
    
     /**
@@ -292,7 +314,8 @@ class StoreController extends Controller
                 }        
                 Sender::sendCartbyMailtoAdmin($items, $order);
                 Sender::sendCartbyMailtoUser($order->email, $items);
-                Sender::sendSMS(Yii::app()->params['phonenumber'], 'Вы получили заказ на сумму: '.ContentModule::sumprice().' р', Yii::app()->name);
+                $message = 'Вы получили заказ на сумму -' . ContentModule::sumprice() . '- р';
+                Sender::sendSMS(Yii::app()->params['phonenumber'], $message, Yii::app()->name);
                 $order->save();
                 Yii::app()->user->setFlash('Order saved', $flashmessage);
                 $order->saveOrder($items, $order);                
@@ -319,8 +342,10 @@ class StoreController extends Controller
         throw new CHttpException(403, 'Доступ запрещен');   
       
       if(isset(Yii::app()->session['id'])){
-        $session =  Yii::app()->session['id'];
+        $session =  Yii::app()->session['id'];        
         unset( $session [ $_GET['item']][ $_GET['subitem']]);
+        if (empty($session [ $_GET['item']])) { unset($session [ $_GET['item']]); }
+        Yii::app()->session['id'] = $session;
         $this->redirect("/store/cart");
       }
     }

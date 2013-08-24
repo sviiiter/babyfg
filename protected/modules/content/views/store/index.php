@@ -47,6 +47,7 @@ Yii::app()->clientscript->registerCss('storeindex',
 <?php Yii::app()->clientscript->registerCss('catalog','
   .newprice{float:left; margin-left:10px;color:red}
   .oldprice{float:left;text-decoration:line-through}
-  .price{width:70%; height:17%}
+  .price{width:70%; height:10%}
+  .item p{margin:0 !important}
 ');
 ?>

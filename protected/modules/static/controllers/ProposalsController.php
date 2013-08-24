@@ -4,7 +4,7 @@ class ProposalsController extends Controller
 {
     public function init(){
         parent::init();
-        if(!Yii::app()->getModule('user')->isAdmin())
+        if(Yii::app()->user->role != User::ADMIN)
             throw new CHttpException(403, 'Forbidden');
     }
     
@@ -31,26 +31,30 @@ class ProposalsController extends Controller
         $this->render('form', array('model' => $model));
     }
     
-    public function actionLeftprop()
+    public function actionLeftprop($id = null)
     {
         $this->pageTitle = Yii::app()->name.' - Баннер левого меню';
         $this->breadcrumbs=array(
                 'Добавить левый баннер',
-        );           
-            $model =  new Bannerleft;
-            Yii::app()->user->setFlash('set W H', 'Загружайте картинку размером ширины 227px. Высота не принципиальна.');
-            if(isset($_POST['Bannerleft']))
-            {                
-                $uploader=CUploadedFile::getInstance($model,'image');
-                if($model->validate())
-                {
-                    $model->image = md5($uploader->name).'.jpg';
-                    if($model->save()){ 
-                        $uploader->saveAs($_SERVER['DOCUMENT_ROOT'] . '/image/leftcolumn/'.$model->image);
-                    }                     
-                    Yii::app()->user->setFlash('baner saved', 'Банер сохранен');
-                }                                
-            }        
+        );
+        if ( isset($_GET['delete'])) {
+          Bannerleft::model()->deleteByPk($id);
+          $id = null;
+        }
+        $model = ($id) ? Bannerleft::model()->findByPk($id) : new Bannerleft;
+        Yii::app()->user->setFlash('set W H', 'Загружайте картинку размером ширины 227px. Высота не принципиальна.');
+        if ( isset($_POST['Bannerleft'])) {                
+          $model->attributes = $_POST['Bannerleft'];
+          $uploader=CUploadedFile::getInstance($model,'image');
+            if($model->validate())
+            {
+                if ($uploader instanceof CUploadedFile) { $model->image = md5($uploader->name).'.jpg'; }
+                if($model->save()){ 
+                    if ($uploader instanceof CUploadedFile) { $uploader->saveAs($_SERVER['DOCUMENT_ROOT'] . '/image/leftcolumn/'.$model->image); }
+                }                     
+                Yii::app()->user->setFlash('baner saved', 'Банер сохранен');
+            }                                
+        }        
         $this->render('form', array('model' => $model));
     }    
     

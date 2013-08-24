@@ -12,12 +12,28 @@ $this->breadcrumbs=array(
              <br/>
 <div class="alert alert-block span5"><?=Yii::app()->user->getFlash('item saved successufuly');?></div>
 <?php } endif; ?>
-
+<?php $root = SomeIterations::selectRoot(NavigationItems::model()->findAll());
+  $menu = SomeIterations::activeMenuItems($root);
+  if (!$model->isNewRecord) {
+    echo CHtml::dropDownList ('copy[menu_id_item]', null,
+      $menu['items'],
+      array(
+        'empty' => '(Копировать товар в)',
+        'class'=>'span3',
+        'options' => $menu['disabled'],
+        'onchange'  =>  'js:
+          var selected = this.value;
+          $.get(\'/manage/manage/edititem\',{id:' . $model->id . ', copyTo:selected},function(data){ $(\'.saved\').show(1000).hide(1000); });
+          '
+    ));
+  }
+?>
+<div class="alert alert-success saved" style="display:none">Скопировано</div>
     <div class="form">
     <?php echo CHtml::beginForm('', 'post',array('enctype'=>'multipart/form-data')); ?>
       <div class="span6">   
         <?php echo CHtml::errorSummary(array($model, $pictures),'<div class="alert alert-error span4">','</div>'); ?>
-        <br/><?=CHtml::link('<< Назад к странце товара', '/store/'.$model->id, array('style'=>'color:red;margin-left:250px'))?>
+        <br/><?=CHtml::link('<< Назад к странце товара', '/store/' . $model->id, array('style'=>'color:red;margin-left:250px'))?>
         <div class="row">
           <?php echo CHtml::activeLabel($model,'name'); ?> 
           <?php echo CHtml::activeTextField($model,'name', array('class'=>'input-xlarge')); ?>
@@ -47,8 +63,9 @@ $this->breadcrumbs=array(
         <!--ТИП-->
         <p>
           <div class="row">    
-            <?php $root = SomeIterations::selectRoot(NavigationItems::model()->findAll());
-              $menu = SomeIterations::activeMenuItems($root);    
+            <?php 
+              //$root = SomeIterations::selectRoot(NavigationItems::model()->findAll());
+              //$menu = SomeIterations::activeMenuItems($root);    
               echo CHtml::activeDropDownList($model,'menu_id_item',
                 $menu['items'],
                 array('empty' => '(Выберите раздел для привязки)','class'=>'span3', 'options' => $menu['disabled'])

@@ -65,6 +65,8 @@
         <div class="alert alert-error border-radiused-wout-sh"><br/>Нет в наличии</div>
       < endif; ?-->
     </div>
+    <div class="alert alert-danger item-errors" style="display:none">      
+    </div>
     <div class="buy-large span2">
       <?php $rand = rand(); 
         echo ((int)$value->instore === 1) 
@@ -77,8 +79,13 @@
                   function(data)
                   {
                     data = JSON.parse(data);
-                    $("#' . $rand . '").html(data.myimg);
-                    $(".quan").html(data.session_count);
+                    if (data.code > 0) {
+                      $(".item-errors").html(data.message).show();
+                    } else {
+                      $(".item-errors").hide();
+                      $("#' . $rand . '").html(data.myimg);
+                      $(".quan").html(data.session_count);
+                    }
                   }
                   '
                 ),

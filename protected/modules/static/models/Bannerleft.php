@@ -29,14 +29,16 @@ class Bannerleft extends CActiveRecord
 		return array(
                         //array('image', 'match', 'pattern' => '/^[^\s]+$/','message' => 'Поле не должно быть пустым'),
                         //array('image', 'required'),
-                        array('image', 'file', 'types'=>'jpg, gif, png'),
+                        array('image', 'file', 'types'=>'jpg, gif, png', 'allowEmpty' =>  true),
+                        array('url', 'safe')
                     );
         }  
         
 	public function attributeLabels()
 	{
 		return array(
-            'image'=>'Баннер',
+            'image' =>  'Баннер',
+            'url'   =>  'Ссылка'
 		);
 	} 
         
